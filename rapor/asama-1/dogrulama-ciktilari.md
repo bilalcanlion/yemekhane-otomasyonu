@@ -8,14 +8,14 @@ README'de belirtildiği gibi önemsizdir.
 
 ## Özet
 
-| # | Kontrol | Beklenen | Sonuç |
-|---|---|---|---|
-| 1 | Servis durumu | 4 servis `healthy`, `replica-setup` `Exited (0)` | ✅ |
-| 2 | Replikasyon | `Replica_IO_Running: Yes`, `Replica_SQL_Running: Yes` | ✅ |
-| 3–5 | Kaynakta yükleme, replikada görünür | 355,00 → 455,00 | ✅ |
-| 6 | Replikaya yazma reddedilir | `ERROR 1290 ... --super-read-only` | ✅ |
-| 7 | Replika kapalıyken yapılan değişikliği sonradan yakalar | 455,00 → 655,00 | ✅ |
-| 8 | Redis | `PONG` | ✅ |
+| #   | Kontrol                                                 | Beklenen                                              | Sonuç |
+| --- | ------------------------------------------------------- | ----------------------------------------------------- | ----- |
+| 1   | Servis durumu                                           | 4 servis `healthy`, `replica-setup` `Exited (0)`      | Geçti |
+| 2   | Replikasyon                                             | `Replica_IO_Running: Yes`, `Replica_SQL_Running: Yes` | Geçti |
+| 3–5 | Kaynakta yükleme, replikada görünür                     | 355,00 → 455,00                                       | Geçti |
+| 6   | Replikaya yazma reddedilir                              | `ERROR 1290 ... --super-read-only`                    | Geçti |
+| 7   | Replika kapalıyken yapılan değişikliği sonradan yakalar | 455,00 → 655,00                                       | Geçti |
+| 8   | Redis                                                   | `PONG`                                                | Geçti |
 
 ---
 

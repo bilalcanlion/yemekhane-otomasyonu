@@ -132,11 +132,6 @@ services:
       timeout: 3s
       retries: 5
 
-  # ---------------------------------------------------------------
-  # UYGULAMA · Node.js + Express Web API (Aşama 2)
-  # Container içinde 8000 portunu dinler; Apache /api/ isteklerini buraya iletir.
-  # Bağlantı bilgileri x-uygulama-ortam bloğundaki ortam değişkenlerinden gelir.
-  # ---------------------------------------------------------------
   uygulama:
     build: ./uygulama
     restart: unless-stopped

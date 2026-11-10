@@ -133,23 +133,22 @@ services:
       retries: 5
 
   # ---------------------------------------------------------------
-  # UYGULAMA · BU SERVİSİ SİZ YAZACAKSINIZ (Aşama 2)
-  # 1. ./uygulama klasörüne kodunuzu ve Dockerfile'ı koyun.
-  # 2. Uygulama container içinde 8000 portunu dinlesin (ya da UYGULAMA_ADRES'i değiştirin).
-  # 3. Aşağıdaki satırların başındaki "# " işaretlerini kaldırın.
+  # UYGULAMA · Node.js + Express Web API (Aşama 2)
+  # Container içinde 8000 portunu dinler; Apache /api/ isteklerini buraya iletir.
+  # Bağlantı bilgileri x-uygulama-ortam bloğundaki ortam değişkenlerinden gelir.
   # ---------------------------------------------------------------
-  # uygulama:
-  #   build: ./uygulama
-  #   restart: unless-stopped
-  #   environment:
-  #     <<: *uygulama-ortam
-  #   depends_on:
-  #     mysql-primary:
-  #       condition: service_healthy
-  #     redis:
-  #       condition: service_healthy
-  #     replica-setup:
-  #       condition: service_completed_successfully
+  uygulama:
+    build: ./uygulama
+    restart: unless-stopped
+    environment:
+      <<: *uygulama-ortam
+    depends_on:
+      mysql-primary:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      replica-setup:
+        condition: service_completed_successfully
 
 volumes:
   mysql-primary-veri:

@@ -3,6 +3,7 @@
 const Y = (() => {
   const SAYFALAR = [
     { yol: '/menu.html', ad: 'Günün Menüsü' },
+    { yol: '/haftalik.html', ad: 'Haftalık Menü' },
   ];
 
   let kullanici = null;
@@ -68,6 +69,39 @@ const Y = (() => {
   const paraBicimi = new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' });
   const tl = (sayi) => paraBicimi.format(Number(sayi) || 0);
 
+  function tarihYaz(metin, uzun = false) {
+    const [y, a, g] = metin.slice(0, 10).split('-').map(Number);
+    return new Date(Date.UTC(y, a - 1, g)).toLocaleDateString('tr-TR', {
+      timeZone: 'UTC',
+      day: 'numeric',
+      month: 'long',
+      weekday: uzun ? 'long' : 'short',
+      year: uzun ? 'numeric' : undefined,
+    });
+  }
+
+  const saatYaz = (metin) => metin.slice(11, 16);
+  const tarihSaatYaz = (metin) => `${tarihYaz(metin)} ${saatYaz(metin)}`;
+
+  function gunEkle(t, gun) {
+    const d = new Date(`${t}T12:00:00Z`);
+    d.setUTCDate(d.getUTCDate() + gun);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function secenekDoldur(select, liste) {
+    select.replaceChildren(...liste.map((x) => el('option', { value: x.id }, x.ad)));
+  }
+
+  function durumRozeti(durum) {
+    const adlar = { aktif: 'Aktif', kullanildi: 'Kullanıldı', iptal: 'İptal' };
+    return el('span', { class: `rozet rozet-${durum}` }, adlar[durum] || durum);
+  }
+
+  function bekle(hedef, metin = 'Yükleniyor…') {
+    hedef.replaceChildren(el('p', { class: 'soluk yukleniyor' }, metin));
+  }
+
   async function sayfaBaslat() {
     try {
       kullanici = (await api('/oturum/ben')).kullanici;
@@ -101,7 +135,8 @@ const Y = (() => {
   }
 
   return {
-    api, el, bildir, bildirimTemizle, tl, sayfaBaslat,
+    api, el, bildir, bildirimTemizle, tl, tarihYaz, saatYaz, tarihSaatYaz, gunEkle,
+    secenekDoldur, durumRozeti, bekle, sayfaBaslat,
     get kullanici() { return kullanici; },
   };
 })();

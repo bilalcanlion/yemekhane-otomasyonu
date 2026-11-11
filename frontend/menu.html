@@ -13,6 +13,22 @@
   <header id="ust" class="ust"></header>
   <main class="kapsayici sayfa">
     <div class="sayfa-baslik"><h1>Günün Menüsü</h1></div>
+
+    <form id="filtre" class="filtre">
+      <div class="tam">
+        <label for="yemekhane">Yemekhane</label>
+        <select id="yemekhane" name="yemekhane"></select>
+      </div>
+      <div>
+        <label for="ogun">Öğün</label>
+        <select id="ogun" name="ogun"></select>
+      </div>
+      <div>
+        <label for="tarih">Tarih</label>
+        <input id="tarih" name="tarih" type="date">
+      </div>
+    </form>
+
     <p id="bildirim" class="bildirim" hidden></p>
     <section id="menu" aria-live="polite"></section>
   </main>

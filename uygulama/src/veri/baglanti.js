@@ -40,6 +40,26 @@ async function okuTek(sql, parametreler = [], kaynak = 'okuma') {
   return satirlar[0] || null;
 }
 
+async function yaz(sql, parametreler = []) {
+  const [sonuc] = await havuzlar.yazma.query(sql, parametreler);
+  return sonuc;
+}
+
+async function islem(is) {
+  const baglanti = await havuzlar.yazma.getConnection();
+  try {
+    await baglanti.beginTransaction();
+    const sonuc = await is(baglanti);
+    await baglanti.commit();
+    return sonuc;
+  } catch (hata) {
+    await baglanti.rollback();
+    throw hata;
+  } finally {
+    baglanti.release();
+  }
+}
+
 async function yordam(ad, parametreler = []) {
   const yer = parametreler.map(() => '?').join(', ');
   const [sonuclar] = await havuzlar.yazma.query(`CALL ${ad}(${yer})`, parametreler);
@@ -59,4 +79,4 @@ async function saglik() {
   return sonuc;
 }
 
-module.exports = { oku, okuTek, yordam, saglik };
+module.exports = { oku, okuTek, yaz, islem, yordam, saglik };

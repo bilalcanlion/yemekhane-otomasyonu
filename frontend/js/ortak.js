@@ -6,6 +6,8 @@ const Y = (() => {
     { yol: '/haftalik.html', ad: 'Haftalık Menü' },
     { yol: '/rezervasyonlarim.html', ad: 'Rezervasyonlarım' },
     { yol: '/bakiye.html', ad: 'Bakiye' },
+    { yol: '/degerlendirme.html', ad: 'Değerlendirme' },
+    { yol: '/yonetim.html', ad: 'Yönetim', rol: 'yonetici' },
   ];
 
   let kullanici = null;
@@ -92,8 +94,10 @@ const Y = (() => {
     return d.toISOString().slice(0, 10);
   }
 
-  function secenekDoldur(select, liste) {
-    select.replaceChildren(...liste.map((x) => el('option', { value: x.id }, x.ad)));
+  function secenekDoldur(select, liste, { bos } = {}) {
+    const secenekler = liste.map((x) => el('option', { value: x.id }, x.ad));
+    if (bos) secenekler.unshift(el('option', { value: '' }, bos));
+    select.replaceChildren(...secenekler);
   }
 
   function durumRozeti(durum) {
@@ -105,10 +109,14 @@ const Y = (() => {
     hedef.replaceChildren(el('p', { class: 'soluk yukleniyor' }, metin));
   }
 
-  async function sayfaBaslat() {
+  async function sayfaBaslat({ rol } = {}) {
     try {
       kullanici = (await api('/oturum/ben')).kullanici;
     } catch {
+      return null;
+    }
+    if (rol && kullanici.rol !== rol) {
+      location.replace('/menu.html');
       return null;
     }
     ustMenuCiz();
@@ -127,9 +135,10 @@ const Y = (() => {
           el('button', { class: 'dugme dugme-ikincil dugme-kucuk', type: 'button', onclick: cikis }, 'Çıkış'))),
       el('nav', { class: 'sekmeler', 'aria-label': 'Ana menü' },
         el('ul', { class: 'kapsayici' },
-          SAYFALAR.map((s) =>
+          SAYFALAR.filter((s) => !s.rol || s.rol === kullanici.rol).map((s) =>
             el('li', {}, el('a', { href: s.yol, 'aria-current': s.yol === location.pathname ? 'page' : null }, s.ad))))),
     );
+    document.querySelector('.sekmeler [aria-current="page"]')?.scrollIntoView({ inline: 'center', block: 'nearest' });
   }
 
   function bakiyeGoster(bakiye) {

@@ -49,7 +49,9 @@
       return el('p', { class: 'soluk kucuk sikisik' }, 'İptal süresi doldu.');
     }
     if (r.durum === 'kullanildi') {
-      return el('p', { class: 'soluk kucuk sikisik' }, `Kullanıldı: ${Y.tarihSaatYaz(r.kullanma_zamani)}`);
+      return el('p', { class: 'soluk kucuk sikisik' },
+        `Kullanıldı: ${Y.tarihSaatYaz(r.kullanma_zamani)} · `,
+        r.puan ? `Puanınız: ${'★'.repeat(r.puan)}` : el('a', { href: '/degerlendirme.html' }, 'Değerlendir'));
     }
     return el('p', { class: 'soluk kucuk sikisik' }, `İptal: ${Y.tarihSaatYaz(r.iptal_zamani)} · ücret iade edildi`);
   }

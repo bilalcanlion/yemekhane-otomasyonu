@@ -18,8 +18,17 @@ async function oturumGerekli(req, res, next) {
   next();
 }
 
+function rolGerekli(...roller) {
+  return (req, res, next) => {
+    if (!roller.includes(req.oturum.rol)) {
+      return res.status(403).json({ hata: 'Bu işlem için yetkiniz yok.' });
+    }
+    next();
+  };
+}
+
 function yazmaYapildi(req) {
   return oturumServisi.yazmaKaydet(req.oturumToken, req.oturum);
 }
 
-module.exports = { CEREZ, oturumGerekli, yazmaYapildi };
+module.exports = { CEREZ, oturumGerekli, rolGerekli, yazmaYapildi };

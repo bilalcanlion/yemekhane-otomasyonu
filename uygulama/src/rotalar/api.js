@@ -1,10 +1,12 @@
 const { Router } = require('express');
-const { oturumGerekli } = require('../ara-katman/oturum');
+const { oturumGerekli, rolGerekli } = require('../ara-katman/oturum');
 const { saglik } = require('../veri/baglanti');
 const oturum = require('../controllers/oturumController');
 const menu = require('../controllers/menuController');
 const rezervasyon = require('../controllers/rezervasyonController');
 const bakiye = require('../controllers/bakiyeController');
+const degerlendirme = require('../controllers/degerlendirmeController');
+const yonetim = require('../controllers/yonetimController');
 
 const r = Router();
 
@@ -25,5 +27,15 @@ r.post('/rezervasyonlar/:id/iptal', oturumGerekli, rezervasyon.iptal);
 
 r.get('/bakiye', oturumGerekli, bakiye.getir);
 r.post('/bakiye/yukle', oturumGerekli, bakiye.yukle);
+
+r.get('/degerlendirmeler', oturumGerekli, degerlendirme.listele);
+r.post('/degerlendirmeler', oturumGerekli, degerlendirme.ekle);
+
+const yonetici = [oturumGerekli, rolGerekli('yonetici')];
+r.get('/yonetim/menuler', ...yonetici, yonetim.menuRaporu);
+r.get('/yonetim/yemekler', ...yonetici, yonetim.yemekler);
+r.get('/yonetim/menuler/:id', ...yonetici, yonetim.menuGetir);
+r.post('/yonetim/menuler', ...yonetici, yonetim.menuOlustur);
+r.put('/yonetim/menuler/:id', ...yonetici, yonetim.menuGuncelle);
 
 module.exports = r;

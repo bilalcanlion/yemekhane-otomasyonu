@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yönetim Paneli · Yemekhane</title>
+  <link rel="stylesheet" href="/css/temel.css">
+  <link rel="stylesheet" href="/css/uygulama.css">
+  <script src="/js/ortak.js" defer></script>
+  <script src="/js/yonetim.js" defer></script>
+</head>
+<body>
+  <header id="ust" class="ust"></header>
+  <main class="kapsayici sayfa">
+    <div class="sayfa-baslik"><h1>Yönetim Paneli</h1></div>
+    <p id="bildirim" class="bildirim" hidden></p>
+
+    <div class="yonetim-izgara">
+      <section class="kart" aria-labelledby="form-baslik">
+        <div class="kart-baslik">
+          <h2 id="form-baslik">Yeni menü</h2>
+          <button id="yeni" class="dugme dugme-cizgili dugme-kucuk" type="button" hidden>+ Yeni</button>
+        </div>
+        <form id="menu-formu" class="ust-bosluk" novalidate>
+          <div class="alan">
+            <label for="f-yemekhane">Yemekhane</label>
+            <select id="f-yemekhane" name="yemekhane_id"></select>
+          </div>
+          <div class="satir alan">
+            <div class="esnek">
+              <label for="f-tarih">Tarih</label>
+              <input id="f-tarih" name="tarih" type="date">
+            </div>
+            <div class="esnek">
+              <label for="f-ogun">Öğün</label>
+              <select id="f-ogun" name="ogun_id"></select>
+            </div>
+          </div>
+          <div class="satir alan">
+            <div class="esnek">
+              <label for="f-ogrenci">Öğrenci fiyatı (₺)</label>
+              <input id="f-ogrenci" name="ogrenci_fiyati" type="number" step="0.01" inputmode="decimal">
+            </div>
+            <div class="esnek">
+              <label for="f-personel">Personel fiyatı (₺)</label>
+              <input id="f-personel" name="personel_fiyati" type="number" step="0.01" inputmode="decimal">
+            </div>
+          </div>
+          <fieldset id="f-yemekler" class="yemek-sec alan">
+            <legend>Yemekler <span id="secim-ozet" class="soluk kucuk"></span></legend>
+          </fieldset>
+          <button class="dugme dugme-tam" type="submit">Menüyü kaydet</button>
+        </form>
+      </section>
+
+      <section class="kart" aria-labelledby="rapor-baslik">
+        <h2 id="rapor-baslik">Menüler: doluluk ve puan</h2>
+        <form id="rapor-filtre" class="filtre ust-bosluk">
+          <div class="tam">
+            <label for="r-yemekhane">Yemekhane</label>
+            <select id="r-yemekhane" name="yemekhane_id"></select>
+          </div>
+          <div>
+            <label for="r-baslangic">Başlangıç</label>
+            <input id="r-baslangic" name="baslangic" type="date">
+          </div>
+          <div>
+            <label for="r-bitis">Bitiş</label>
+            <input id="r-bitis" name="bitis" type="date">
+          </div>
+        </form>
+        <div id="rapor" class="tablo-kaydir" aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

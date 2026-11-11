@@ -11,4 +11,6 @@ module.exports = {
   },
 
   oturumSuresiSn: 30 * 60,
+
+  tazeOkumaMs: 5000,
 };

@@ -68,7 +68,7 @@
         el('div', { class: 'ogun-alt ust-bosluk' },
           el('span', { class: 'soluk kucuk' }, `Rezervasyon son saati: ${Y.tarihSaatYaz(m.rezervasyon_son)}`),
           m.rezerve_edilebilir
-            ? el('a', { class: 'dugme', href: `/haftalik.html?yemekhane_id=${m.yemekhane_id}&baslangic=${m.tarih}` }, 'Haftalık menüde gör')
+            ? el('a', { class: 'dugme', href: `/haftalik.html?yemekhane_id=${m.yemekhane_id}&baslangic=${m.tarih}` }, 'Rezervasyon yap')
             : el('span', { class: 'rozet' }, m.neden))),
     );
   }

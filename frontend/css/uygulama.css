@@ -56,6 +56,13 @@
   font-weight: 700;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
+  text-decoration: none;
+}
+.bakiye-cip:hover { color: var(--metin); filter: brightness(1.05); }
+.bakiye-cip.parla { animation: parla .9s ease; }
+@keyframes parla {
+  0% { box-shadow: 0 0 0 0 rgba(242, 177, 52, .9); }
+  100% { box-shadow: 0 0 0 10px rgba(242, 177, 52, 0); }
 }
 
 .sekmeler { background: var(--ana); }
@@ -211,6 +218,37 @@
 .meta { display: flex; flex-wrap: wrap; gap: .25rem .9rem; font-size: var(--boyut-kucuk); color: var(--metin-soluk); }
 .meta b { color: var(--metin); font-variant-numeric: tabular-nums; }
 .fiyat { font-weight: 800; color: var(--ana-koyu); font-variant-numeric: tabular-nums; }
+.meta-aralikli { margin: .6rem 0; }
+
+.dugme-tehlike { background: var(--hata); }
+.dugme-tehlike:hover { background: #8c1d17; }
+
+.cipler { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.cipler button {
+  border: 1px solid var(--cizgi);
+  background: var(--yuzey);
+  border-radius: 999px;
+  padding: .35rem .85rem;
+  min-height: 36px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: var(--boyut-kucuk);
+  color: var(--metin);
+}
+.cipler button[aria-pressed="true"] { background: var(--ana); border-color: var(--ana); color: #fff; }
+
+.alan small { display: block; color: var(--metin-soluk); margin-top: .25rem; }
+.satir { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.satir > .esnek { flex: 1 1 140px; }
+
+.bakiye-buyuk { font-size: 2.25rem; font-weight: 800; color: var(--ana-koyu); font-variant-numeric: tabular-nums; margin: 0; }
+.hizli-tutar { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: .75rem; }
+.hareket { display: grid; grid-template-columns: 1fr auto; gap: .1rem .75rem; padding: .6rem 0; border-bottom: 1px solid var(--cizgi); }
+.hareket:last-child { border-bottom: 0; }
+.hareket .tutar { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+.tutar.arti { color: var(--basari); }
+.tutar.eksi { color: var(--hata); }
+.hareket .zaman { font-size: .75rem; color: var(--metin-soluk); }
 
 @media (min-width: 560px) {
   .ust-ad { display: block; }
@@ -221,4 +259,5 @@
   .sayfa-baslik h1 { font-size: var(--boyut-baslik); }
   .gun-ogunler { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   .gun-ogunler .kart { margin-bottom: 0; }
+  .iki-sutun { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
 }

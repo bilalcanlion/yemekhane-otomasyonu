@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bakiye · Yemekhane</title>
+  <link rel="stylesheet" href="/css/temel.css">
+  <link rel="stylesheet" href="/css/uygulama.css">
+  <script src="/js/ortak.js" defer></script>
+  <script src="/js/bakiye.js" defer></script>
+</head>
+<body>
+  <header id="ust" class="ust"></header>
+  <main class="kapsayici sayfa">
+    <div class="sayfa-baslik"><h1>Bakiye</h1></div>
+    <p id="bildirim" class="bildirim" hidden></p>
+
+    <div class="iki-sutun">
+      <div>
+        <section class="kart" aria-labelledby="bakiye-baslik">
+          <h2 id="bakiye-baslik" class="soluk kucuk">Güncel bakiye</h2>
+          <p id="bakiye" class="bakiye-buyuk">—</p>
+        </section>
+
+        <section class="kart" aria-labelledby="yukle-baslik">
+          <h2 id="yukle-baslik">Bakiye yükle</h2>
+          <form id="yukle-formu" novalidate>
+            <div class="hizli-tutar" role="group" aria-label="Hızlı tutar">
+              <button class="dugme dugme-cizgili dugme-kucuk" type="button" data-tutar="50">50 ₺</button>
+              <button class="dugme dugme-cizgili dugme-kucuk" type="button" data-tutar="100">100 ₺</button>
+              <button class="dugme dugme-cizgili dugme-kucuk" type="button" data-tutar="250">250 ₺</button>
+            </div>
+            <div class="alan">
+              <label for="tutar">Tutar (₺)</label>
+              <div class="satir">
+                <input class="esnek" id="tutar" name="tutar" type="number" inputmode="decimal" step="0.01" placeholder="ör. 100">
+                <button class="dugme" type="submit">Yükle</button>
+              </div>
+              <small>Tek seferde 10 ile 1000 ₺ arası yüklenebilir.</small>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <section class="kart" aria-labelledby="hareket-baslik">
+        <h2 id="hareket-baslik">Hareket geçmişi</h2>
+        <div id="hareketler" aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

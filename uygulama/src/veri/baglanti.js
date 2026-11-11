@@ -40,6 +40,12 @@ async function okuTek(sql, parametreler = [], kaynak = 'okuma') {
   return satirlar[0] || null;
 }
 
+async function yordam(ad, parametreler = []) {
+  const yer = parametreler.map(() => '?').join(', ');
+  const [sonuclar] = await havuzlar.yazma.query(`CALL ${ad}(${yer})`, parametreler);
+  return sonuclar[0][0];
+}
+
 async function saglik() {
   const sonuc = {};
   for (const ad of ['yazma', 'okuma']) {
@@ -53,4 +59,4 @@ async function saglik() {
   return sonuc;
 }
 
-module.exports = { oku, okuTek, saglik };
+module.exports = { oku, okuTek, yordam, saglik };

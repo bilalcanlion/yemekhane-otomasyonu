@@ -4,6 +4,8 @@ const Y = (() => {
   const SAYFALAR = [
     { yol: '/menu.html', ad: 'Günün Menüsü' },
     { yol: '/haftalik.html', ad: 'Haftalık Menü' },
+    { yol: '/rezervasyonlarim.html', ad: 'Rezervasyonlarım' },
+    { yol: '/bakiye.html', ad: 'Bakiye' },
   ];
 
   let kullanici = null;
@@ -59,6 +61,7 @@ const Y = (() => {
     kutu.className = `bildirim bildirim-${tur}`;
     kutu.setAttribute('role', tur === 'hata' ? 'alert' : 'status');
     kutu.hidden = false;
+    kutu.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
 
   function bildirimTemizle() {
@@ -120,13 +123,23 @@ const Y = (() => {
         el('a', { class: 'marka', href: '/menu.html' }, el('span', { class: 'marka-isaret', 'aria-hidden': 'true' }), 'Yemekhane'),
         el('div', { class: 'ust-kullanici' },
           el('span', { class: 'ust-ad' }, `${kullanici.ad} ${kullanici.soyad}`, el('small', {}, rolAdi)),
-          el('span', { class: 'bakiye-cip', id: 'ust-bakiye', title: 'Güncel bakiye' }, tl(kullanici.bakiye)),
+          el('a', { class: 'bakiye-cip', href: '/bakiye.html', id: 'ust-bakiye', title: 'Güncel bakiye' }, tl(kullanici.bakiye)),
           el('button', { class: 'dugme dugme-ikincil dugme-kucuk', type: 'button', onclick: cikis }, 'Çıkış'))),
       el('nav', { class: 'sekmeler', 'aria-label': 'Ana menü' },
         el('ul', { class: 'kapsayici' },
           SAYFALAR.map((s) =>
             el('li', {}, el('a', { href: s.yol, 'aria-current': s.yol === location.pathname ? 'page' : null }, s.ad))))),
     );
+  }
+
+  function bakiyeGoster(bakiye) {
+    if (kullanici) kullanici.bakiye = bakiye;
+    const cip = document.getElementById('ust-bakiye');
+    if (!cip) return;
+    cip.textContent = tl(bakiye);
+    cip.classList.remove('parla');
+    void cip.offsetWidth;
+    cip.classList.add('parla');
   }
 
   async function cikis() {
@@ -136,7 +149,7 @@ const Y = (() => {
 
   return {
     api, el, bildir, bildirimTemizle, tl, tarihYaz, saatYaz, tarihSaatYaz, gunEkle,
-    secenekDoldur, durumRozeti, bekle, sayfaBaslat,
+    secenekDoldur, durumRozeti, bekle, sayfaBaslat, bakiyeGoster,
     get kullanici() { return kullanici; },
   };
 })();

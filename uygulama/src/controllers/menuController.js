@@ -20,7 +20,7 @@ async function gunluk(req, res) {
   const menu = await menuServisi.menuGetir(yemekhaneId, gun, ogunId);
   if (!menu) throw new IstekHatasi('Bu yemekhane, tarih ve öğün için menü yok.', 404);
 
-  const durum = await menuVeri.doluluk(menu.menu_id, req.oturum.id);
+  const durum = await menuVeri.doluluk(menu.menu_id, req.oturum.id, req.okumaKaynagi);
   res.json({
     ...menu,
     fiyat: menuServisi.rolFiyati(menu, req.oturum.rol),
@@ -37,7 +37,7 @@ async function haftalik(req, res) {
   const baslangic = tarih(req.query.baslangic, 'Başlangıç tarihi');
   const bitis = gunEkle(baslangic, 6);
 
-  const satirlar = await menuVeri.haftalik(yemekhaneId, baslangic, bitis, req.oturum.id);
+  const satirlar = await menuVeri.haftalik(yemekhaneId, baslangic, bitis, req.oturum.id, req.okumaKaynagi);
   const menuler = satirlar.map((s) => ({
     menu_id: s.menu_id,
     tarih: s.tarih,

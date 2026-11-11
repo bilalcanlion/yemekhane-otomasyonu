@@ -1,4 +1,5 @@
 const oturumServisi = require('../servisler/oturumServisi');
+const config = require('../config');
 
 const CEREZ = 'oturum';
 
@@ -11,7 +12,14 @@ async function oturumGerekli(req, res, next) {
   }
   req.oturum = oturum;
   req.oturumToken = token;
+
+  const tazeMi = Date.now() - (oturum.sonYazma || 0) < config.tazeOkumaMs;
+  req.okumaKaynagi = tazeMi ? 'yazma' : 'okuma';
   next();
 }
 
-module.exports = { CEREZ, oturumGerekli };
+function yazmaYapildi(req) {
+  return oturumServisi.yazmaKaydet(req.oturumToken, req.oturum);
+}
+
+module.exports = { CEREZ, oturumGerekli, yazmaYapildi };

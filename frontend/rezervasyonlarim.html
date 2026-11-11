@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rezervasyonlarım · Yemekhane</title>
+  <link rel="stylesheet" href="/css/temel.css">
+  <link rel="stylesheet" href="/css/uygulama.css">
+  <script src="/js/ortak.js" defer></script>
+  <script src="/js/rezervasyonlarim.js" defer></script>
+</head>
+<body>
+  <header id="ust" class="ust"></header>
+  <main class="kapsayici sayfa">
+    <div class="sayfa-baslik"><h1>Rezervasyonlarım</h1></div>
+
+    <div class="cipler" role="group" aria-label="Duruma göre süz">
+      <button type="button" data-durum="" aria-pressed="true">Tümü</button>
+      <button type="button" data-durum="aktif" aria-pressed="false">Aktif</button>
+      <button type="button" data-durum="kullanildi" aria-pressed="false">Kullanıldı</button>
+      <button type="button" data-durum="iptal" aria-pressed="false">İptal</button>
+    </div>
+
+    <p id="bildirim" class="bildirim" hidden></p>
+    <section id="liste" aria-live="polite"></section>
+  </main>
+</body>
+</html>

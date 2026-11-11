@@ -39,7 +39,7 @@ async function cikis(req, res) {
 }
 
 async function ben(req, res) {
-  const kullanici = await kullaniciVeri.idIleBul(req.oturum.id);
+  const kullanici = await kullaniciVeri.idIleBul(req.oturum.id, req.okumaKaynagi);
   if (!kullanici) throw new IstekHatasi('Kullanıcı bulunamadı.', 404);
   res.json({ kullanici });
 }

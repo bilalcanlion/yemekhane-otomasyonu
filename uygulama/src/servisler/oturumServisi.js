@@ -8,7 +8,7 @@ const yeniBitis = () => Date.now() + config.oturumSuresiSn * 1000;
 
 async function olustur(kullanici) {
   const token = crypto.randomBytes(32).toString('hex');
-  oturumlar.set(token, { veri: { ...kullanici }, bitis: yeniBitis() });
+  oturumlar.set(token, { veri: { ...kullanici, sonYazma: 0 }, bitis: yeniBitis() });
   return token;
 }
 
@@ -24,8 +24,14 @@ async function getirVeYenile(token) {
   return kayit.veri;
 }
 
+async function yazmaKaydet(token, oturum) {
+  oturum.sonYazma = Date.now();
+  const kayit = oturumlar.get(token);
+  if (kayit) kayit.veri.sonYazma = oturum.sonYazma;
+}
+
 async function sil(token) {
   oturumlar.delete(token);
 }
 
-module.exports = { olustur, getirVeYenile, sil };
+module.exports = { olustur, getirVeYenile, yazmaKaydet, sil };

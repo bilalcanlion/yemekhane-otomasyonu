@@ -66,6 +66,10 @@
   }
 
   function ogunKarti(m) {
+    const dugme = el('button', { class: 'dugme', type: 'button', disabled: !m.rezerve_edilebilir },
+      m.rezerve_edilebilir ? 'Rezerve et' : m.neden);
+    dugme.addEventListener('click', () => rezerveEt(m, dugme));
+
     return el('article', { class: 'kart ogun-kart' },
       el('div', { class: 'kart-baslik' },
         el('h3', {}, m.ogun),
@@ -77,8 +81,21 @@
         el('span', {}, 'Son ', el('b', {}, Y.saatYaz(m.rezervasyon_son)))),
       el('div', { class: 'ogun-alt' },
         m.rezervasyon_durum ? Y.durumRozeti(m.rezervasyon_durum) : el('span'),
-        m.rezerve_edilebilir
-          ? el('span', { class: 'rozet rozet-aktif' }, 'Rezervasyona açık')
-          : el('span', { class: 'rozet' }, m.neden)));
+        dugme));
+  }
+
+  async function rezerveEt(m, dugme) {
+    dugme.disabled = true;
+    dugme.textContent = 'İşleniyor…';
+    try {
+      const sonuc = await Y.api('/rezervasyonlar', { method: 'POST', govde: { menu_id: m.menu_id } });
+      Y.bakiyeGoster(sonuc.bakiye);
+      await yukle();
+      Y.bildir(`${sonuc.mesaj} ${Y.tarihYaz(m.tarih)} ${m.ogun} · Ücret: ${Y.tl(sonuc.ucret)} · Kalan bakiye: ${Y.tl(sonuc.bakiye)}`, 'basari');
+    } catch (hata) {
+      Y.bildir(hata.message);
+      dugme.disabled = false;
+      dugme.textContent = 'Rezerve et';
+    }
   }
 })();

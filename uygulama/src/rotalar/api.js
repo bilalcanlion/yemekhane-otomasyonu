@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { oturumGerekli, rolGerekli } = require('../ara-katman/oturum');
 const { saglik } = require('../veri/baglanti');
+const { redisSaglik } = require('../veri/redis');
 const oturum = require('../controllers/oturumController');
 const menu = require('../controllers/menuController');
 const rezervasyon = require('../controllers/rezervasyonController');
@@ -11,7 +12,7 @@ const yonetim = require('../controllers/yonetimController');
 const r = Router();
 
 r.get('/', (req, res) => res.json({ uygulama: 'yemekhane-api', durum: 'çalışıyor' }));
-r.get('/saglik', async (req, res) => res.json({ db: await saglik() }));
+r.get('/saglik', async (req, res) => res.json({ db: await saglik(), redis: await redisSaglik() }));
 
 r.post('/oturum/giris', oturum.giris);
 r.post('/oturum/cikis', oturum.cikis);

@@ -1,6 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const config = require('./config');
+const { redisBaglan } = require('./veri/redis');
 const apiRotalari = require('./rotalar/api');
 const { bulunamadi, hataYakalayici } = require('./ara-katman/hata');
 
@@ -27,7 +28,15 @@ app.use('/api', (req, res, next) => {
 app.use(bulunamadi);
 app.use(hataYakalayici);
 
-app.listen(config.port, () => {
-  console.log(`[uygulama] ${config.port} portunda dinleniyor`);
-  console.log(`[uygulama] yazma: ${config.db.yazmaHost}, okuma: ${config.db.okumaHost}`);
+async function basla() {
+  await redisBaglan();
+  app.listen(config.port, () => {
+    console.log(`[uygulama] ${config.port} portunda dinleniyor`);
+    console.log(`[uygulama] yazma: ${config.db.yazmaHost}, okuma: ${config.db.okumaHost}`);
+  });
+}
+
+basla().catch((hata) => {
+  console.error('[uygulama] başlatılamadı:', hata.message);
+  process.exit(1);
 });

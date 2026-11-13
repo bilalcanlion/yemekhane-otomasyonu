@@ -10,6 +10,11 @@ module.exports = {
     sifre: process.env.DB_SIFRE || '',
   },
 
+  redis: {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: Number(process.env.REDIS_PORT || 6379),
+  },
+
   oturumSuresiSn: 30 * 60,
 
   tazeOkumaMs: 5000,

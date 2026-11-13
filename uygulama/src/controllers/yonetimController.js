@@ -1,4 +1,5 @@
 const yonetimVeri = require('../veri/yonetimVeri');
+const menuServisi = require('../servisler/menuServisi');
 const { yazmaYapildi } = require('../ara-katman/oturum');
 const { IstekHatasi } = require('../ara-katman/hata');
 const d = require('../ara-katman/dogrulama');
@@ -71,6 +72,7 @@ async function menuGuncelle(req, res) {
   } catch (hata) {
     throw veritabaniHatasiniCevir(hata);
   }
+  await menuServisi.onbellegiYenile(mevcut.yemekhane_id, mevcut.tarih, mevcut.ogun_id);
   await yazmaYapildi(req);
   res.json({ mesaj: 'Menü güncellendi.', menu_id: menuId });
 }

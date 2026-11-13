@@ -15,7 +15,7 @@ function bugun() {
   return okuTek('SELECT CURDATE() AS bugun, NOW() AS simdi');
 }
 
-function menuDetay(yemekhaneId, tarih, ogunId) {
+function menuDetay(yemekhaneId, tarih, ogunId, kaynak = 'okuma') {
   return oku(
     `SELECT menu_id, tarih, yemekhane_id, yemekhane, ogun_id, ogun, rezervasyon_son,
             ogrenci_fiyati, personel_fiyati, yemek_id, yemek, kategori, kategori_sira,
@@ -24,6 +24,7 @@ function menuDetay(yemekhaneId, tarih, ogunId) {
       WHERE yemekhane_id = ? AND tarih = ? AND ogun_id = ?
       ORDER BY kategori_sira, yemek`,
     [yemekhaneId, tarih, ogunId],
+    kaynak,
   );
 }
 

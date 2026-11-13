@@ -1,4 +1,15 @@
+const { istemci } = require('../veri/redis');
 const menuVeri = require('../veri/menuVeri');
+
+const anahtar = (yemekhaneId, tarih, ogunId) => `menu:${yemekhaneId}:${tarih}:${ogunId}`;
+
+function gunSonu(tarih) {
+  return Math.floor(new Date(`${tarih}T23:59:59+03:00`).getTime() / 1000);
+}
+
+function bugunIstanbul() {
+  return new Date(Date.now() + 3 * 3600 * 1000).toISOString().slice(0, 10);
+}
 
 function menuOlustur(satirlar) {
   const ilk = satirlar[0];
@@ -28,10 +39,33 @@ function menuOlustur(satirlar) {
   };
 }
 
-async function menuGetir(yemekhaneId, tarih, ogunId) {
-  const satirlar = await menuVeri.menuDetay(yemekhaneId, tarih, ogunId);
+async function veritabanindanYukle(yemekhaneId, tarih, ogunId, kaynak) {
+  const a = anahtar(yemekhaneId, tarih, ogunId);
+  const satirlar = await menuVeri.menuDetay(yemekhaneId, tarih, ogunId, kaynak);
+  console.log(`[önbellek] ${a} -> veritabanından geldi (${kaynak === 'yazma' ? 'kaynak' : 'replika'})`);
   if (satirlar.length === 0) return null;
-  return menuOlustur(satirlar);
+
+  const menu = menuOlustur(satirlar);
+  const bitis = Math.max(gunSonu(tarih), gunSonu(bugunIstanbul()));
+  await istemci.set(a, JSON.stringify(menu), { EXAT: bitis });
+  return menu;
+}
+
+async function menuGetir(yemekhaneId, tarih, ogunId) {
+  const a = anahtar(yemekhaneId, tarih, ogunId);
+  const onbellekte = await istemci.get(a);
+  if (onbellekte) {
+    console.log(`[önbellek] ${a} -> Redis'ten geldi`);
+    return JSON.parse(onbellekte);
+  }
+  return veritabanindanYukle(yemekhaneId, tarih, ogunId, 'okuma');
+}
+
+async function onbellegiYenile(yemekhaneId, tarih, ogunId) {
+  const a = anahtar(yemekhaneId, tarih, ogunId);
+  const silinen = await istemci.del(a);
+  console.log(`[önbellek] ${a} silindi (${silinen ? 'vardı' : 'yoktu'})`);
+  await veritabanindanYukle(yemekhaneId, tarih, ogunId, 'yazma');
 }
 
 function rolFiyati(menu, rol) {
@@ -46,4 +80,4 @@ function rezervasyonDurumu({ suresi_doldu, bos_yer, rezervasyon_durum }) {
   return { rezerve_edilebilir: true, neden: null };
 }
 
-module.exports = { menuGetir, rolFiyati, rezervasyonDurumu };
+module.exports = { menuGetir, onbellegiYenile, rolFiyati, rezervasyonDurumu };

@@ -8,6 +8,7 @@ class IstekHatasi extends Error {
 const SP_SIGNAL = 1644;
 const CHECK_IHLALI = 3819;
 const READ_ONLY = 1290;
+const ARALIK_DISI = 1264;
 
 function bulunamadi(req, res) {
   res.status(404).json({ hata: 'İstenen adres bulunamadı.' });
@@ -21,6 +22,10 @@ function hataYakalayici(hata, req, res, next) {
   if (hata.errno === SP_SIGNAL) {
     console.log(`[iş kuralı] ${req.method} ${req.originalUrl}: ${hata.sqlMessage}`);
     return res.status(400).json({ hata: hata.sqlMessage });
+  }
+
+  if (hata.errno === ARALIK_DISI) {
+    return res.status(400).json({ hata: 'Gönderilen değerlerden biri geçerli aralığın dışında.' });
   }
 
   if (hata.type === 'entity.parse.failed') {

@@ -6,6 +6,7 @@ const d = require('../ara-katman/dogrulama');
 
 const TEKRAR_KAYIT = 1062;
 const YABANCI_ANAHTAR = 1452;
+const ARALIK_DISI = 1264;
 
 async function menuRaporu(req, res) {
   const baslangic = d.tarih(req.query.baslangic, 'Başlangıç tarihi');
@@ -37,7 +38,7 @@ function menuGovdesi(govde = {}) {
 
 function veritabaniHatasiniCevir(hata) {
   if (hata.errno === TEKRAR_KAYIT) return new IstekHatasi('Bu yemekhane, tarih ve öğün için zaten bir menü var.', 409);
-  if (hata.errno === YABANCI_ANAHTAR) return new IstekHatasi('Geçersiz yemekhane, öğün ya da yemek seçimi.');
+  if (hata.errno === YABANCI_ANAHTAR || hata.errno === ARALIK_DISI) return new IstekHatasi('Geçersiz yemekhane, öğün ya da yemek seçimi.');
   return hata;
 }
 

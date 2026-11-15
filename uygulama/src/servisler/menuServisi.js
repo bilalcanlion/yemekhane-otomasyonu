@@ -33,6 +33,8 @@ function menuOlustur(satirlar) {
     rezervasyon_son: ilk.rezervasyon_son,
     ogrenci_fiyati: ilk.ogrenci_fiyati,
     personel_fiyati: ilk.personel_fiyati,
+    ogrenci_yarim_fiyati: ilk.ogrenci_yarim_fiyati,
+    personel_yarim_fiyati: ilk.personel_yarim_fiyati,
     toplam_kalori: yemekler.reduce((t, y) => t + y.kalori, 0),
     tamami_vejetaryen: yemekler.every((y) => y.vejetaryen),
     yemekler,
@@ -72,6 +74,15 @@ function rolFiyati(menu, rol) {
   return rol === 'ogrenci' ? menu.ogrenci_fiyati : menu.personel_fiyati;
 }
 
+function porsiyonlar(menu, rol) {
+  const liste = [{ porsiyon: 'tam', ad: 'Tam porsiyon', ucret: rolFiyati(menu, rol) }];
+  const yarim = rol === 'ogrenci' ? menu.ogrenci_yarim_fiyati : menu.personel_yarim_fiyati;
+  if (yarim !== null && yarim !== undefined) {
+    liste.push({ porsiyon: 'yarim', ad: 'Yarım porsiyon', ucret: yarim });
+  }
+  return liste;
+}
+
 function rezervasyonDurumu({ suresi_doldu, bos_yer, rezervasyon_durum }) {
   if (rezervasyon_durum === 'aktif') return { rezerve_edilebilir: false, neden: 'Rezervasyonunuz var' };
   if (rezervasyon_durum === 'kullanildi') return { rezerve_edilebilir: false, neden: 'Kullanıldı' };
@@ -80,4 +91,4 @@ function rezervasyonDurumu({ suresi_doldu, bos_yer, rezervasyon_durum }) {
   return { rezerve_edilebilir: true, neden: null };
 }
 
-module.exports = { menuGetir, onbellegiYenile, rolFiyati, rezervasyonDurumu };
+module.exports = { menuGetir, onbellegiYenile, rolFiyati, porsiyonlar, rezervasyonDurumu };

@@ -1,7 +1,7 @@
 const { oku, yordam } = require('./baglanti');
 
-function rezervasyonYap(kullaniciId, menuId) {
-  return yordam('sp_rezervasyon_yap', [kullaniciId, menuId]);
+function rezervasyonYap(kullaniciId, menuId, porsiyon) {
+  return yordam('sp_rezervasyon_yap', [kullaniciId, menuId, porsiyon]);
 }
 
 function rezervasyonIptal(kullaniciId, rezervasyonId) {
@@ -16,7 +16,7 @@ function kullaniciRezervasyonlari(kullaniciId, kaynak, sadeceDurum = null) {
     parametreler.push(sadeceDurum);
   }
   return oku(
-    `SELECT r.id, r.menu_id, r.durum, r.ucret, r.olusturma, r.kullanma_zamani, r.iptal_zamani,
+    `SELECT r.id, r.menu_id, r.durum, r.porsiyon, r.ucret, r.olusturma, r.kullanma_zamani, r.iptal_zamani,
             m.tarih, m.yemekhane_id, yh.ad AS yemekhane, o.ad AS ogun,
             TIMESTAMP(m.tarih, o.son_saat) AS rezervasyon_son,
             (r.durum = 'aktif' AND NOW() < TIMESTAMP(m.tarih, o.son_saat)) AS iptal_edilebilir,

@@ -24,10 +24,12 @@ async function gunluk(req, res) {
   res.json({
     ...menu,
     fiyat: menuServisi.rolFiyati(menu, req.oturum.rol),
+    porsiyonlar: menuServisi.porsiyonlar(menu, req.oturum.rol),
     bos_yer: durum.bos_yer,
     kapasite: durum.kapasite,
     suresi_doldu: Boolean(durum.suresi_doldu),
     rezervasyon_durum: durum.rezervasyon_durum,
+    rezervasyon_porsiyon: durum.rezervasyon_porsiyon,
     ...menuServisi.rezervasyonDurumu(durum),
   });
 }
@@ -50,7 +52,9 @@ async function haftalik(req, res) {
     rezervasyon_son: s.rezervasyon_son,
     suresi_doldu: Boolean(s.suresi_doldu),
     fiyat: menuServisi.rolFiyati(s, req.oturum.rol),
+    porsiyonlar: menuServisi.porsiyonlar(s, req.oturum.rol),
     rezervasyon_durum: s.rezervasyon_durum,
+    rezervasyon_porsiyon: s.rezervasyon_porsiyon,
     ...menuServisi.rezervasyonDurumu(s),
   }));
   res.json({ baslangic, bitis, menuler });

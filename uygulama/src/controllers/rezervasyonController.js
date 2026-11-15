@@ -1,16 +1,22 @@
 const rezervasyonVeri = require('../veri/rezervasyonVeri');
 const { yazmaYapildi } = require('../ara-katman/oturum');
+const { IstekHatasi } = require('../ara-katman/hata');
 const { pozitifTamSayi } = require('../ara-katman/dogrulama');
+
+const PORSIYONLAR = ['tam', 'yarim'];
 
 async function yap(req, res) {
   const menuId = pozitifTamSayi(req.body?.menu_id, 'Menü');
+  const porsiyon = req.body?.porsiyon ?? 'tam';
+  if (!PORSIYONLAR.includes(porsiyon)) throw new IstekHatasi('Geçersiz porsiyon seçimi.');
 
-  const sonuc = await rezervasyonVeri.rezervasyonYap(req.oturum.id, menuId);
+  const sonuc = await rezervasyonVeri.rezervasyonYap(req.oturum.id, menuId, porsiyon);
   await yazmaYapildi(req);
 
   res.status(201).json({
     mesaj: 'Rezervasyonunuz alındı.',
     rezervasyon_id: sonuc.rezervasyon_id,
+    porsiyon: sonuc.porsiyon,
     ucret: sonuc.ucret,
     bakiye: sonuc.bakiye,
   });

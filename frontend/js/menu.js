@@ -56,7 +56,12 @@
           m.tamami_vejetaryen ? el('span', { class: 'rozet rozet-veg' }, 'Tamamı vejetaryen') : null),
 
         el('dl', { class: 'ozet' },
-          el('div', {}, el('dt', {}, 'Ücret (size)'), el('dd', { class: 'vurgu' }, Y.tl(m.fiyat))),
+          el('div', {},
+            el('dt', {}, 'Ücret (size)'),
+            el('dd', { class: 'vurgu' }, Y.tl(m.fiyat)),
+            m.porsiyonlar.length > 1
+              ? el('dd', { class: 'kucuk soluk' }, m.porsiyonlar.slice(1).map((p) => `${p.ad}: ${Y.tl(p.ucret)}`).join(' · '))
+              : null),
           el('div', {}, el('dt', {}, 'Toplam kalori'), el('dd', {}, `${m.toplam_kalori} kcal`)),
           el('div', {}, el('dt', {}, 'Boş yer'), el('dd', {}, `${m.bos_yer} / ${m.kapasite}`))),
 

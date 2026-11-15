@@ -65,10 +65,25 @@
         el('div', { class: 'gun-ogunler' }, menuler.map(ogunKarti)))));
   }
 
+  function porsiyonSecimi(m) {
+    if (!m.rezerve_edilebilir || m.porsiyonlar.length < 2) return null;
+    return el('fieldset', { class: 'porsiyon' },
+      el('legend', {}, 'Porsiyon'),
+      m.porsiyonlar.map((p, i) =>
+        el('label', {},
+          el('input', { type: 'radio', name: `porsiyon-${m.menu_id}`, value: p.porsiyon, checked: i === 0 }),
+          el('span', {}, p.ad),
+          el('b', {}, Y.tl(p.ucret)))));
+  }
+
   function ogunKarti(m) {
+    const secim = porsiyonSecimi(m);
     const dugme = el('button', { class: 'dugme', type: 'button', disabled: !m.rezerve_edilebilir },
       m.rezerve_edilebilir ? 'Rezerve et' : m.neden);
-    dugme.addEventListener('click', () => rezerveEt(m, dugme));
+    dugme.addEventListener('click', () => {
+      const secili = secim?.querySelector('input:checked');
+      rezerveEt(m, dugme, secili ? secili.value : 'tam');
+    });
 
     return el('article', { class: 'kart ogun-kart' },
       el('div', { class: 'kart-baslik' },
@@ -79,19 +94,25 @@
         el('span', {}, 'Boş yer ', el('b', {}, `${m.bos_yer}/${m.kapasite}`)),
         el('span', {}, el('b', {}, m.toplam_kalori), ' kcal'),
         el('span', {}, 'Son ', el('b', {}, Y.saatYaz(m.rezervasyon_son)))),
+      secim,
       el('div', { class: 'ogun-alt' },
-        m.rezervasyon_durum ? Y.durumRozeti(m.rezervasyon_durum) : el('span'),
+        m.rezervasyon_durum
+          ? el('span', { class: 'satir' },
+            Y.durumRozeti(m.rezervasyon_durum),
+            m.rezervasyon_durum !== 'iptal' && m.rezervasyon_porsiyon === 'yarim' ? el('span', { class: 'rozet' }, 'Yarım porsiyon') : null)
+          : el('span'),
         dugme));
   }
 
-  async function rezerveEt(m, dugme) {
+  async function rezerveEt(m, dugme, porsiyon) {
     dugme.disabled = true;
     dugme.textContent = 'İşleniyor…';
     try {
-      const sonuc = await Y.api('/rezervasyonlar', { method: 'POST', govde: { menu_id: m.menu_id } });
+      const sonuc = await Y.api('/rezervasyonlar', { method: 'POST', govde: { menu_id: m.menu_id, porsiyon } });
+      const porsiyonAdi = m.porsiyonlar.find((p) => p.porsiyon === sonuc.porsiyon)?.ad || '';
       Y.bakiyeGoster(sonuc.bakiye);
       await yukle();
-      Y.bildir(`${sonuc.mesaj} ${Y.tarihYaz(m.tarih)} ${m.ogun} · Ücret: ${Y.tl(sonuc.ucret)} · Kalan bakiye: ${Y.tl(sonuc.bakiye)}`, 'basari');
+      Y.bildir(`${sonuc.mesaj} ${Y.tarihYaz(m.tarih)} ${m.ogun} · ${porsiyonAdi} porsiyon · Ücret: ${Y.tl(sonuc.ucret)} · Kalan bakiye: ${Y.tl(sonuc.bakiye)}`, 'basari');
     } catch (hata) {
       Y.bildir(hata.message);
       dugme.disabled = false;

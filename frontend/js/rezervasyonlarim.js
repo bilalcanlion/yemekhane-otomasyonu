@@ -64,6 +64,7 @@
           el('p', { class: 'soluk kucuk sikisik' }, r.yemekhane)),
         Y.durumRozeti(r.durum)),
       el('div', { class: 'meta meta-aralikli' },
+        el('span', {}, 'Porsiyon ', el('b', {}, r.porsiyon === 'yarim' ? 'Yarım' : 'Tam')),
         el('span', {}, 'Ücret ', el('b', {}, Y.tl(r.ucret))),
         el('span', {}, `No #${r.id}`)),
       altBilgi(r));

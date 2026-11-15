@@ -75,10 +75,10 @@ function rolFiyati(menu, rol) {
 }
 
 function porsiyonlar(menu, rol) {
-  const liste = [{ porsiyon: 'tam', ad: 'Tam porsiyon', ucret: rolFiyati(menu, rol) }];
+  const liste = [{ porsiyon: 'tam', ad: 'Tam', ucret: rolFiyati(menu, rol) }];
   const yarim = rol === 'ogrenci' ? menu.ogrenci_yarim_fiyati : menu.personel_yarim_fiyati;
   if (yarim !== null && yarim !== undefined) {
-    liste.push({ porsiyon: 'yarim', ad: 'Yarım porsiyon', ucret: yarim });
+    liste.push({ porsiyon: 'yarim', ad: 'Yarım', ucret: yarim });
   }
   return liste;
 }

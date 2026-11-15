@@ -220,6 +220,31 @@
 .fiyat { font-weight: 800; color: var(--ana-koyu); font-variant-numeric: tabular-nums; }
 .meta-aralikli { margin: .6rem 0; }
 
+.ozet dd.kucuk { font-size: .75rem; font-weight: 600; }
+
+.porsiyon { display: flex; gap: .4rem; border: 0; padding: 0; margin: 0; min-width: 0; }
+.porsiyon legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.porsiyon label {
+  position: relative;
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .4rem;
+  margin: 0;
+  padding: .45rem .6rem;
+  border: 1px solid var(--cizgi);
+  border-radius: var(--kose);
+  background: var(--yuzey);
+  font-size: var(--boyut-kucuk);
+  font-weight: 600;
+  cursor: pointer;
+}
+.porsiyon b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.porsiyon input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.porsiyon label:has(input:checked) { border-color: var(--ana); background: var(--basari-zemin); color: var(--ana-koyu); }
+.porsiyon label:has(input:focus-visible) { outline: 3px solid var(--vurgu); outline-offset: 2px; }
+
 .dugme-tehlike { background: var(--hata); }
 .dugme-tehlike:hover { background: #8c1d17; }
 

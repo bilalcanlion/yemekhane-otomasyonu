@@ -21,8 +21,10 @@ function fiyat(deger, alan) {
   return Math.round(sayi * 100) / 100;
 }
 
-function tamSayiListesi(deger, alan) {
-  if (!Array.isArray(deger) || deger.length === 0) throw new IstekHatasi(`En az bir ${alan} seçin.`);
+function tamSayiListesi(deger, alan, { bosOlabilir = false } = {}) {
+  if (!Array.isArray(deger) || (!bosOlabilir && deger.length === 0)) {
+    throw new IstekHatasi(bosOlabilir ? `Geçersiz ${alan} listesi.` : `En az bir ${alan} seçin.`);
+  }
   return [...new Set(deger.map((d) => pozitifTamSayi(d, alan)))];
 }
 

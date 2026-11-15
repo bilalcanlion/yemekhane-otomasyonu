@@ -1,4 +1,5 @@
 const menuVeri = require('../veri/menuVeri');
+const profilVeri = require('../veri/profilVeri');
 const menuServisi = require('../servisler/menuServisi');
 const { IstekHatasi } = require('../ara-katman/hata');
 const { pozitifTamSayi, tarih, gunEkle } = require('../ara-katman/dogrulama');
@@ -20,9 +21,15 @@ async function gunluk(req, res) {
   const menu = await menuServisi.menuGetir(yemekhaneId, gun, ogunId);
   if (!menu) throw new IstekHatasi('Bu yemekhane, tarih ve öğün için menü yok.', 404);
 
-  const durum = await menuVeri.doluluk(menu.menu_id, req.oturum.id, req.okumaKaynagi);
+  const [durum, alerjenlerim] = await Promise.all([
+    menuVeri.doluluk(menu.menu_id, req.oturum.id, req.okumaKaynagi),
+    profilVeri.kullaniciAlerjenleri(req.oturum.id, req.okumaKaynagi),
+  ]);
+  const yemekler = menuServisi.alerjenUyarilari(menu.yemekler, alerjenlerim);
   res.json({
     ...menu,
+    yemekler,
+    alerjen_uyarisi: yemekler.filter((y) => y.uyari_alerjenler.length > 0).length,
     fiyat: menuServisi.rolFiyati(menu, req.oturum.rol),
     porsiyonlar: menuServisi.porsiyonlar(menu, req.oturum.rol),
     bos_yer: durum.bos_yer,
@@ -46,6 +53,7 @@ async function haftalik(req, res) {
     ogun_id: s.ogun_id,
     ogun: s.ogun,
     yemekler: s.yemekler,
+    uyari_yemekler: s.uyari_yemekler ? s.uyari_yemekler.split(', ') : [],
     toplam_kalori: Number(s.toplam_kalori) || 0,
     kapasite: s.kapasite,
     bos_yer: s.bos_yer,

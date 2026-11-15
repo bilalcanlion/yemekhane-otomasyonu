@@ -163,6 +163,31 @@
 .rozet-iptal { background: var(--zemin); color: var(--metin-soluk); text-decoration: line-through; }
 .rozet-veg { background: #E8F3DF; color: #3C6B1F; }
 .rozet-alerjen { background: #FFF4DB; color: #7A4B00; }
+.rozet-uyari { background: var(--hata-zemin); color: var(--hata); white-space: normal; }
+
+.uyari-kutu {
+  margin: 0 0 1rem;
+  padding: .6rem .75rem;
+  border-left: 4px solid var(--hata);
+  border-radius: var(--kose);
+  background: var(--hata-zemin);
+  color: var(--hata);
+  font-size: var(--boyut-kucuk);
+  font-weight: 600;
+}
+.uyari-satir { margin: 0; color: var(--hata); font-size: var(--boyut-kucuk); font-weight: 600; }
+.yemek-uyarili { border-left: 3px solid var(--hata); padding-left: .6rem; }
+
+.bilgi-listesi { margin: 0; }
+.bilgi-listesi div { display: grid; grid-template-columns: 7.5rem 1fr; gap: .5rem; padding: .5rem 0; border-bottom: 1px solid var(--cizgi); }
+.bilgi-listesi div:last-child { border-bottom: 0; }
+.bilgi-listesi dt { color: var(--metin-soluk); font-size: var(--boyut-kucuk); }
+.bilgi-listesi dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+
+.alerjen-sec { display: grid; grid-template-columns: repeat(2, 1fr); gap: .1rem .75rem; border: 0; padding: 0; margin: 0 0 1rem; min-width: 0; }
+.alerjen-sec legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.alerjen-sec label { display: flex; align-items: center; gap: .5rem; font-weight: 400; margin: 0; padding: .45rem 0; cursor: pointer; }
+.alerjen-sec input { width: 18px; height: 18px; flex: none; }
 
 .ozet {
   display: grid;

@@ -90,6 +90,9 @@
         el('h3', {}, m.ogun),
         el('span', { class: 'fiyat' }, Y.tl(m.fiyat))),
       el('p', { class: 'yemek-ozet' }, m.yemekler),
+      m.uyari_yemekler.length
+        ? el('p', { class: 'uyari-satir' }, `⚠ Alerjeniniz var: ${m.uyari_yemekler.join(', ')}`)
+        : null,
       el('div', { class: 'meta' },
         el('span', {}, 'Boş yer ', el('b', {}, `${m.bos_yer}/${m.kapasite}`)),
         el('span', {}, el('b', {}, m.toplam_kalori), ' kcal'),

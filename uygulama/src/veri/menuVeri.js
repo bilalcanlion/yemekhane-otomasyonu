@@ -52,6 +52,12 @@ function haftalik(yemekhaneId, baslangic, bitis, kullaniciId, kaynak) {
             (SELECT GROUP_CONCAT(v.yemek ORDER BY v.kategori_sira, v.yemek SEPARATOR ', ')
                FROM v_menu_detay v WHERE v.menu_id = d.menu_id) AS yemekler,
             (SELECT SUM(v.kalori) FROM v_menu_detay v WHERE v.menu_id = d.menu_id) AS toplam_kalori,
+            (SELECT GROUP_CONCAT(DISTINCT y.ad ORDER BY y.ad SEPARATOR ', ')
+               FROM menu_yemekleri my
+               JOIN yemekler y               ON y.id = my.yemek_id
+               JOIN yemek_alerjenleri ya     ON ya.yemek_id = y.id
+               JOIN kullanici_alerjenleri ka ON ka.alerjen_id = ya.alerjen_id AND ka.kullanici_id = ?
+              WHERE my.menu_id = d.menu_id) AS uyari_yemekler,
             r.id AS rezervasyon_id, r.durum AS rezervasyon_durum, r.porsiyon AS rezervasyon_porsiyon
        FROM v_menu_doluluk d
        JOIN menuler m ON m.id = d.menu_id
@@ -59,7 +65,7 @@ function haftalik(yemekhaneId, baslangic, bitis, kullaniciId, kaynak) {
        LEFT JOIN rezervasyonlar r ON r.menu_id = d.menu_id AND r.kullanici_id = ?
       WHERE d.yemekhane_id = ? AND d.tarih BETWEEN ? AND ?
       ORDER BY d.tarih, o.sira`,
-    [kullaniciId, yemekhaneId, baslangic, bitis],
+    [kullaniciId, kullaniciId, yemekhaneId, baslangic, bitis],
     kaynak,
   );
 }

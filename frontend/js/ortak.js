@@ -7,6 +7,7 @@ const Y = (() => {
     { yol: '/rezervasyonlarim.html', ad: 'Rezervasyonlarım' },
     { yol: '/bakiye.html', ad: 'Bakiye' },
     { yol: '/degerlendirme.html', ad: 'Değerlendirme' },
+    { yol: '/profil.html', ad: 'Profilim' },
     { yol: '/yonetim.html', ad: 'Yönetim', rol: 'yonetici' },
   ];
 

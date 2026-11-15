@@ -65,6 +65,11 @@
           el('div', {}, el('dt', {}, 'Toplam kalori'), el('dd', {}, `${m.toplam_kalori} kcal`)),
           el('div', {}, el('dt', {}, 'Boş yer'), el('dd', {}, `${m.bos_yer} / ${m.kapasite}`))),
 
+        m.alerjen_uyarisi > 0
+          ? el('p', { class: 'uyari-kutu', role: 'note' },
+            `⚠ Bu menüde alerjen listenizdeki maddeleri içeren ${m.alerjen_uyarisi} yemek var.`)
+          : null,
+
         gruplar.map((g) =>
           el('section', { class: 'kategori' },
             el('h3', {}, g.kategori),
@@ -79,11 +84,13 @@
   }
 
   function yemekSatiri(y) {
-    return el('li', { class: 'yemek' },
+    const uyarili = y.uyari_alerjenler.length > 0;
+    return el('li', { class: uyarili ? 'yemek yemek-uyarili' : 'yemek' },
       el('span', { class: 'yemek-ad' }, y.yemek),
       el('span', { class: 'yemek-kalori' }, `${y.kalori} kcal`),
       (y.vejetaryen || y.alerjenler.length)
         ? el('span', { class: 'yemek-etiketler' },
+          uyarili ? el('span', { class: 'rozet rozet-uyari' }, `⚠ Alerjeniniz: ${y.uyari_alerjenler.join(', ')}`) : null,
           y.vejetaryen ? el('span', { class: 'rozet rozet-veg' }, 'Vejetaryen') : null,
           y.alerjenler.map((a) => el('span', { class: 'rozet rozet-alerjen' }, a)))
         : null);

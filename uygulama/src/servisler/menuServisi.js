@@ -83,6 +83,13 @@ function porsiyonlar(menu, rol) {
   return liste;
 }
 
+function alerjenUyarilari(yemekler, kullaniciAlerjenleri) {
+  return yemekler.map((y) => ({
+    ...y,
+    uyari_alerjenler: kullaniciAlerjenleri.filter((a) => y.alerjen_idler.includes(a.id)).map((a) => a.ad),
+  }));
+}
+
 function rezervasyonDurumu({ suresi_doldu, bos_yer, rezervasyon_durum }) {
   if (rezervasyon_durum === 'aktif') return { rezerve_edilebilir: false, neden: 'Rezervasyonunuz var' };
   if (rezervasyon_durum === 'kullanildi') return { rezerve_edilebilir: false, neden: 'Kullanıldı' };
@@ -91,4 +98,4 @@ function rezervasyonDurumu({ suresi_doldu, bos_yer, rezervasyon_durum }) {
   return { rezerve_edilebilir: true, neden: null };
 }
 
-module.exports = { menuGetir, onbellegiYenile, rolFiyati, porsiyonlar, rezervasyonDurumu };
+module.exports = { menuGetir, onbellegiYenile, rolFiyati, porsiyonlar, alerjenUyarilari, rezervasyonDurumu };

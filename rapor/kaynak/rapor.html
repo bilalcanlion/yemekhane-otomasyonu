@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Yemekhane Otomasyonu · Dönem Ödevi Raporu</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm 16mm 15mm; }
+  :root {
+    --yesil: #145a46;
+    --yesil-acik: #e6f0ec;
+    --sari: #f2b134;
+    --gri: #5b6670;
+    --cizgi: #d5dcd9;
+    --kod: #f4f6f5;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; font-size: 10pt; line-height: 1.45; color: #1d2328; background: #fff; }
+  h1 { font-size: 22pt; margin: 0 0 2mm; color: var(--yesil); line-height: 1.15; }
+  h2 { font-size: 15pt; margin: 0 0 3mm; padding-bottom: 1.5mm; border-bottom: 2px solid var(--yesil); color: var(--yesil); }
+  h3 { font-size: 11.5pt; margin: 5mm 0 2mm; color: #1d2328; break-after: avoid; }
+  p { margin: 0 0 2.5mm; }
+  ul, ol { margin: 0 0 2.5mm; padding-left: 5mm; }
+  li { margin-bottom: 1mm; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 8.8pt; background: var(--kod); padding: 0 1mm; border-radius: 2px; }
+  pre { font-family: Consolas, "Courier New", monospace; font-size: 8pt; line-height: 1.35; background: var(--kod); border-left: 3px solid var(--yesil); padding: 2.5mm 3mm; margin: 0 0 3mm; white-space: pre-wrap; word-break: break-word; break-inside: avoid; }
+  pre .dosya { display: block; color: var(--gri); font-weight: 600; margin-bottom: 1mm; }
+  table { width: 100%; border-collapse: collapse; margin: 0 0 3mm; font-size: 9pt; break-inside: avoid; }
+  th, td { border: 1px solid var(--cizgi); padding: 1.3mm 2mm; text-align: left; vertical-align: top; }
+  th { background: var(--yesil-acik); font-weight: 600; }
+  td.gecti { color: var(--yesil); font-weight: 700; white-space: nowrap; }
+  .bolum { break-before: page; }
+  .kucuk { font-size: 8.5pt; color: var(--gri); }
+  .kapak-ust { border-bottom: 4px solid var(--sari); padding-bottom: 4mm; margin-bottom: 5mm; }
+  .kapak-ust .alt { color: var(--gri); font-size: 11pt; }
+  .yol { border: 2px solid var(--yesil); background: var(--yesil-acik); border-radius: 3mm; padding: 4mm 5mm; margin: 0 0 5mm; }
+  .yol .etiket { font-size: 9pt; text-transform: uppercase; letter-spacing: .08em; color: var(--yesil); font-weight: 700; }
+  .yol .baslik { font-size: 17pt; font-weight: 700; margin: 1mm 0 2mm; }
+  .yol p { margin: 0 0 1.5mm; }
+  .iki { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .akis { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5mm; margin: 0 0 4mm; font-size: 8.8pt; }
+  .akis span { border: 1px solid var(--yesil); background: #fff; border-radius: 2mm; padding: 1.2mm 2.2mm; }
+  .akis b { color: var(--yesil); }
+  .akis i { font-style: normal; color: var(--gri); }
+  .not { border-left: 3px solid var(--sari); background: #fdf6e6; padding: 2.5mm 3.5mm; margin: 0 0 3mm; break-inside: avoid; }
+  .ekranlar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin: 0 0 3mm; }
+  .ekranlar.iki-sutun { grid-template-columns: repeat(2, 1fr); }
+  figure { margin: 0; break-inside: avoid; }
+  figure .cerceve { border: 1px solid var(--cizgi); border-radius: 2mm; overflow: hidden; background: #eef1f0; }
+  figure img { display: block; width: 100%; }
+  figure .cerceve.kirp { max-height: 118mm; }
+  figure .cerceve.kirp-kisa { max-height: 92mm; }
+  figcaption { font-size: 8.5pt; color: var(--gri); margin-top: 1.3mm; line-height: 1.3; }
+  figcaption b { color: #1d2328; }
+  .genis figure .cerceve { max-height: 105mm; }
+</style>
+</head>
+<body>
+
+<section>
+  <div class="kapak-ust">
+    <h1>Yemekhane Otomasyonu</h1>
+    <div class="alt">Web Teknolojileri · Dönem Ödevi Raporu · Kasım 2026</div>
+    <div class="kucuk">Depo: github.com/bilalcanlion/yemekhane-otomasyonu</div>
+  </div>
+
+  <div class="yol">
+    <div class="etiket">Seçilen yol</div>
+    <div class="baslik">Web API + arayüz</div>
+    <p><b>API:</b> Node.js 22 ve Express 5 ile yazıldı, <code>uygulama</code> container'ında 8000 portunda çalışır ve yalnızca JSON döner.</p>
+    <p><b>Arayüz:</b> HTML5, CSS3 ve düz JavaScript. Dosyalar <code>frontend</code> container'ında (Apache 2.4) durur, veriyi <code>fetch</code> ile alır. React gibi bir çerçeve kullanılmadı.</p>
+    <p><b>Yönlendirme:</b> Apache <code>-D WEBAPI</code> ayarıyla çalışır; <code>/api/</code> ile başlayan istekleri <code>http://uygulama:8000/api/</code> adresine iletir. Tarayıcı veritabanına ya da Redis'e hiç bağlanmaz.</p>
+  </div>
+
+  <h3>Altı container</h3>
+  <table>
+    <tr><th>Servis</th><th>İmaj</th><th>Görev</th></tr>
+    <tr><td><code>frontend</code></td><td>Apache 2.4</td><td>HTML/CSS/JS dosyaları, <code>/api/</code> isteklerini uygulamaya iletir · localhost:8080</td></tr>
+    <tr><td><code>uygulama</code></td><td>node:22-alpine (kendi Dockerfile)</td><td>Express Web API: route → controller → veri katmanı</td></tr>
+    <tr><td><code>mysql-primary</code></td><td>mysql:8.4</td><td>Kaynak: tüm yazmalar ve stored procedure çağrıları · :3307</td></tr>
+    <tr><td><code>mysql-replica</code></td><td>mysql:8.4</td><td>Replika: listeleme ve raporlar, <code>super_read_only</code> · :3308</td></tr>
+    <tr><td><code>replica-setup</code></td><td>mysql:8.4</td><td>Replikasyonu bir kez kurar ve çıkar (<code>Exited (0)</code>)</td></tr>
+    <tr><td><code>redis</code></td><td>redis:7.4-alpine</td><td>Menü önbelleği ve oturumlar · :6379</td></tr>
+  </table>
+
+  <div class="iki">
+    <div>
+      <h3>Aşama etiketleri</h3>
+      <table>
+        <tr><th>Etiket</th><th>Commit</th><th>Tarih</th></tr>
+        <tr><td><code>asama-1</code></td><td><code>779bd1a</code></td><td>8 Kasım 2026</td></tr>
+        <tr><td><code>asama-2</code></td><td><code>e76e8e3</code></td><td>11 Kasım 2026</td></tr>
+        <tr><td><code>asama-3</code></td><td><code>e11fbf6</code></td><td>13 Kasım 2026</td></tr>
+        <tr><td><code>asama-4</code></td><td><code>bb489a1</code></td><td>15 Kasım 2026</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Çalıştırma</h3>
+      <pre>git clone https://github.com/bilalcanlion/yemekhane-otomasyonu
+cd yemekhane-otomasyonu
+docker compose up -d</pre>
+      <p class="kucuk">Ek adım gerekmez: uygulama imajı compose ile kurulur, <code>04_degisiklik.sql</code> ilk kurulumda kendiliğinden çalışır. Arayüz: <code>http://localhost:8080</code>. Örnek hesapların şifresi README'de yazılıdır.</p>
+    </div>
+  </div>
+
+  <p class="kucuk">Tüm komutlar Windows 11, PowerShell 5.1 ve Docker Desktop üzerinde proje kökünde çalıştırıldı. Çıktıların tam hâli depoda <code>rapor/asama-1</code>, <code>rapor/asama-3</code> ve <code>rapor/asama-4</code> klasörlerindedir. Bu raporda okunabilirlik için kısaltıldı. MySQL'in <code>Using a password on the command line interface can be insecure.</code> uyarısı çıktılardan çıkarıldı.</p>
+</section>
+
+<section class="bolum">
+  <h2>Aşama 1 · Altyapı</h2>
+  <table>
+    <tr><th>#</th><th>Kontrol</th><th>Beklenen</th><th>Sonuç</th></tr>
+    <tr><td>1</td><td>Servis durumu</td><td>4 servis <code>healthy</code>, <code>replica-setup</code> <code>Exited (0)</code></td><td class="gecti">Geçti</td></tr>
+    <tr><td>2</td><td>Replikasyon çalışıyor</td><td><code>Replica_IO_Running: Yes</code>, <code>Replica_SQL_Running: Yes</code></td><td class="gecti">Geçti</td></tr>
+    <tr><td>3</td><td>Kaynakta yükleme replikada görünür</td><td>355,00 → 455,00</td><td class="gecti">Geçti</td></tr>
+    <tr><td>4</td><td>Replikaya yazma reddedilir</td><td><code>ERROR 1290 ... --super-read-only</code></td><td class="gecti">Geçti</td></tr>
+    <tr><td>5</td><td>Replika durdurulup açılınca aradaki değişikliği yakalar</td><td>455,00 → 655,00</td><td class="gecti">Geçti</td></tr>
+    <tr><td>6</td><td>Redis</td><td><code>PONG</code></td><td class="gecti">Geçti</td></tr>
+  </table>
+
+  <h3>1. Servislerin durumu</h3>
+  <pre>PS&gt; docker compose ps -a
+NAME                        IMAGE                SERVICE         STATUS
+yemekhane-frontend-1        yemekhane-frontend   frontend        Up 19 minutes (healthy)
+yemekhane-mysql-primary-1   mysql:8.4            mysql-primary   Up 19 minutes (healthy)
+yemekhane-mysql-replica-1   mysql:8.4            mysql-replica   Up 19 minutes (healthy)
+yemekhane-redis-1           redis:7.4-alpine     redis           Up 19 minutes (healthy)
+yemekhane-replica-setup-1   mysql:8.4            replica-setup   Exited (0) 18 minutes ago</pre>
+  <p><code>replica-setup</code> replikayı bir kez kurup çıkan yardımcı container'dır. <code>Exited (0)</code> işini başarıyla bitirdiğini gösterir. (Bu çıktı Aşama 1'de alındı; uygulama servisi Aşama 2'de eklendi.)</p>
+
+  <h3>2. Replikasyon durumu</h3>
+  <pre>PS&gt; docker compose exec mysql-replica mysql -uroot -pyemekhane_kok -e "SHOW REPLICA STATUS\G"
+             Replica_IO_State: Waiting for source to send event
+                  Source_Host: mysql-primary
+           Replica_IO_Running: Yes
+          Replica_SQL_Running: Yes
+                   Last_Errno: 0
+        Seconds_Behind_Source: 0
+            Executed_Gtid_Set: 64fbefa7-db55-11f1-892e-4653db60fbda:1-42
+                Auto_Position: 1</pre>
+  <p>IO thread kaynaktan olayları alıyor, SQL thread onları uyguluyor. Gecikme yok. <code>Auto_Position: 1</code>, replikanın GTID ile konumlandığını gösterir.</p>
+
+  <h3>3. Kaynakta yapılan bakiye yüklemesi replikada görünüyor</h3>
+  <pre>PS&gt; docker compose exec mysql-replica mysql -uyemekhane_app -pUyg_2026 yemekhane -e "SELECT id, bakiye FROM kullanicilar WHERE id = 7"
+|  7 | 355.00 |
+
+PS&gt; docker compose exec mysql-primary mysql -uyemekhane_app -pUyg_2026 yemekhane -e "CALL sp_bakiye_yukle(7, 100)"
+| hareket_id | bakiye |
+|        455 | 455.00 |
+
+PS&gt; docker compose exec mysql-replica mysql -uyemekhane_app -pUyg_2026 yemekhane -e "SELECT id, bakiye FROM kullanicilar WHERE id = 7"
+|  7 | 455.00 |</pre>
+
+  <h3>4. Replikaya yazma denemesi reddediliyor</h3>
+  <pre>PS&gt; docker compose exec mysql-replica mysql -uyemekhane_app -pUyg_2026 yemekhane -e "CALL sp_bakiye_yukle(7, 50)"
+ERROR 1290 (HY000) at line 1: The MySQL server is running with the --super-read-only option so it cannot execute this statement</pre>
+
+  <h3>5. Replika kapalıyken yapılan değişikliği sonradan yakalıyor</h3>
+  <pre>PS&gt; docker compose stop mysql-replica
+ ✔ Container yemekhane-mysql-replica-1 Stopped
+PS&gt; docker compose exec mysql-primary mysql -uyemekhane_app -pUyg_2026 yemekhane -e "CALL sp_bakiye_yukle(7, 200)"
+|        456 | 655.00 |
+PS&gt; docker compose start mysql-replica
+ ✔ Container yemekhane-mysql-replica-1 Started
+PS&gt; docker compose exec mysql-replica mysql -uyemekhane_app -pUyg_2026 yemekhane -e "SELECT id, bakiye FROM kullanicilar WHERE id = 7"
+|  7 | 655.00 |</pre>
+  <p>Replika kapalıyken kaynakta yapılan 200 TL'lik yükleme, replika açılınca GTID sayesinde kaldığı yerden alındı.</p>
+
+  <h3>6. Redis</h3>
+  <pre>PS&gt; docker compose exec redis redis-cli ping
+PONG</pre>
+</section>
+
+<section class="bolum">
+  <h2>Aşama 2 · Uygulama</h2>
+
+  <h3>Katmanlar</h3>
+  <div class="iki">
+    <pre>uygulama/src/
+  server.js        Express ve başlatma
+  config.js        ortam değişkenleri
+  rotalar/api.js   tüm /api/ adresleri
+  ara-katman/      oturum, rol, hata
+  controllers/     doğrula ve yanıtla
+  servisler/       menü önbelleği,
+                   oturum (Redis)
+  veri/            SQL yalnızca burada:
+                   baglanti.js,
+                   kullaniciVeri.js,
+                   menuVeri.js,
+                   rezervasyonVeri.js,
+                   bakiyeVeri.js ...</pre>
+    <div>
+      <ul>
+        <li><b>Controller içinde SQL yok.</b> Controller yalnızca veri katmanındaki fonksiyonları çağırır.</li>
+        <li><b>Para hareketi yordamla yapılır:</b> <code>sp_rezervasyon_yap</code>, <code>sp_rezervasyon_iptal</code>, <code>sp_bakiye_yukle</code>. Uygulama bu işlemleri SQL ile yeniden yazmaz.</li>
+        <li><b>View'lar:</b> <code>v_menu_detay</code> (menü ve yemekler), <code>v_menu_doluluk</code> (boş yer), <code>v_menu_puan</code> (yönetici raporu).</li>
+        <li><b>Arayüzde iş kuralı yok.</b> Fiyat, son saat ve kapasite gibi kontroller sunucuda ve yordamda yapılır. Arayüz sunucunun döndüğü sonucu gösterir.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Bir isteğin yolu: rezervasyon yapmak (<code>POST /api/rezervasyonlar</code>)</h3>
+  <div class="akis">
+    <span><b>Tarayıcı</b> <i>haftalik.js</i></span> →
+    <span><b>Apache</b> <i>/api/</i></span> →
+    <span><b>Route</b> <i>api.js</i></span> →
+    <span><b>Ara katman</b> <i>oturumGerekli</i></span> →
+    <span><b>Controller</b> <i>rezervasyonController.yap</i></span> →
+    <span><b>Veri katmanı</b> <i>rezervasyonVeri → baglanti.yordam</i></span> →
+    <span><b>mysql-primary</b> <i>sp_rezervasyon_yap</i></span> →
+    <span><b>JSON yanıt</b></span>
+  </div>
+
+  <pre><span class="dosya">1 · frontend/js/haftalik.js: kullanıcı "Rezerve et" düğmesine basar</span>const sonuc = await Y.api('/rezervasyonlar', { method: 'POST', govde: { menu_id: m.menu_id, porsiyon } });</pre>
+  <pre><span class="dosya">2 · apache/yemekhane.conf: Apache isteği uygulama container'ına iletir</span>ProxyPass        "/api/" "${UYGULAMA_ADRES}/api/"</pre>
+  <pre><span class="dosya">3 · uygulama/src/rotalar/api.js: route, önce oturum kontrolü sonra controller</span>r.post('/rezervasyonlar', oturumGerekli, rezervasyon.yap);</pre>
+  <pre><span class="dosya">4 · uygulama/src/controllers/rezervasyonController.js: girdiyi doğrular, veri katmanını çağırır, yanıtı yazar</span>async function yap(req, res) {
+  const menuId = pozitifTamSayi(req.body?.menu_id, 'Menü');
+  const porsiyon = req.body?.porsiyon ?? 'tam';
+  if (!PORSIYONLAR.includes(porsiyon)) throw new IstekHatasi('Geçersiz porsiyon seçimi.');
+
+  const sonuc = await rezervasyonVeri.rezervasyonYap(req.oturum.id, menuId, porsiyon);
+  await yazmaYapildi(req);
+
+  res.status(201).json({
+    mesaj: 'Rezervasyonunuz alındı.',
+    rezervasyon_id: sonuc.rezervasyon_id,
+    porsiyon: sonuc.porsiyon,
+    ucret: sonuc.ucret,
+    bakiye: sonuc.bakiye,
+  });
+}</pre>
+  <pre><span class="dosya">5 · uygulama/src/veri/rezervasyonVeri.js ve veri/baglanti.js: yordam her zaman yazma (kaynak) havuzunda çağrılır</span>function rezervasyonYap(kullaniciId, menuId, porsiyon) {
+  return yordam('sp_rezervasyon_yap', [kullaniciId, menuId, porsiyon]);
+}
+
+async function yordam(ad, parametreler = []) {
+  const yer = parametreler.map(() =&gt; '?').join(', ');
+  const [sonuclar] = await havuzlar.yazma.query(`CALL ${ad}(${yer})`, parametreler);
+  return sonuclar[0][0];
+}</pre>
+  <pre><span class="dosya">6 · db/init/04_degisiklik.sql: yordam bakiyeyi kaynakta düşer ve yeni bakiyeyi döner</span>UPDATE kullanicilar SET bakiye = bakiye - v_ucret WHERE id = p_kullanici_id;
+...
+COMMIT;
+SELECT v_rez_id AS rezervasyon_id, v_ucret AS ucret, v_bakiye - v_ucret AS bakiye, v_porsiyon AS porsiyon;</pre>
+  <pre><span class="dosya">7 · Yanıt (HTTP 201 Created)</span>{"mesaj":"Rezervasyonunuz alındı.","rezervasyon_id":371,"porsiyon":"yarim","ucret":24,"bakiye":691}</pre>
+  <p>Arayüz yanıttaki <code>bakiye</code> değerini üst çubukta gösterir ve haftalık listeyi yeniden yükler.</p>
+</section>
+
+<section>
+  <h3>Okuma ve yazma ayrımı</h3>
+  <p><code>veri/baglanti.js</code> iki bağlantı havuzu açar: <code>yazma</code> (mysql-primary) ve <code>okuma</code> (mysql-replica). <code>yaz</code>, <code>islem</code> ve <code>yordam</code> fonksiyonları her zaman yazma havuzunu kullanır. <code>oku</code> varsayılan olarak replikadan okur.</p>
+  <table>
+    <tr><th>İşlem</th><th>Nereye gider</th></tr>
+    <tr><td>Rezervasyon yapma ve iptal, bakiye yükleme</td><td>Kaynak: <code>sp_rezervasyon_yap</code>, <code>sp_rezervasyon_iptal</code>, <code>sp_bakiye_yukle</code></td></tr>
+    <tr><td>Değerlendirme ekleme, menü oluşturma ve düzenleme, alerjen kaydetme</td><td>Kaynak (<code>yaz</code> / <code>islem</code>)</td></tr>
+    <tr><td>Günün menüsü, haftalık menü, rezervasyon listesi, bakiye geçmişi, değerlendirmeler</td><td>Replika</td></tr>
+    <tr><td>Yönetici raporu (<code>v_menu_doluluk</code>, <code>v_menu_puan</code>)</td><td>Replika</td></tr>
+    <tr><td>Bir kullanıcının yazmasından sonraki 5 saniye, o kullanıcının okumaları</td><td>Kaynak (aşağıdaki paragraf)</td></tr>
+    <tr><td>Replikaya ulaşılamazsa (<code>ECONNREFUSED</code> vb.)</td><td>Okuma kaynaktan yapılır, günlüğe uyarı yazılır</td></tr>
+  </table>
+
+  <h3>Rezervasyondan sonra bakiye neden kaynaktan okunuyor? (replikasyon gecikmesi)</h3>
+  <p>MySQL replikasyonu eşzamansızdır. Kaynak bir işlemi <code>COMMIT</code> ettiğinde kullanıcıya hemen "tamam" der. Değişiklik ise binlog üzerinden replikaya ancak sonra gönderilir; replika önce bunu relay log'a yazar, sonra SQL thread'i uygular. Bu süre normalde birkaç milisaniyedir. Ama yük altında, büyük bir işlemde ya da replika yeniden başlarken (Aşama 1, madde 5) saniyelere çıkabilir. Rezervasyondan hemen sonra bakiye replikadan okunsaydı, replikada henüz düşülmemiş <b>eski bakiye</b> görünebilirdi. Kullanıcı ücretin çekilmediğini sanabilir, sayfayı yenileyip ikinci kez işlem deneyebilirdi. Bunu önlemek için iki şey yapıldı. Birincisi, rezervasyon yanıtındaki bakiye, yordamın kaynakta hesapladığı değerdir (<code>v_bakiye - v_ucret</code>); arayüz onu doğrudan gösterir. İkincisi, yazma yapan her istekten sonra <code>yazmaYapildi(req)</code> oturuma son yazma zamanını kaydeder. <code>oturumGerekli</code> ara katmanı, son yazmanın üzerinden 5 saniye geçmediyse <code>req.okumaKaynagi = 'yazma'</code> yapar. Böylece kullanıcı rezervasyondan sonra Bakiye ya da Rezervasyonlarım sayfasına geçtiğinde verisi kaynaktan okunur. 5 saniye sonra okumalar yine replikaya döner. Bu kural yalnızca yazmayı yapan kullanıcıyı etkiler; diğer kullanıcılar replikadan okumaya devam eder.</p>
+  <pre><span class="dosya">uygulama/src/ara-katman/oturum.js</span>const tazeMi = Date.now() - (oturum.sonYazma || 0) &lt; config.tazeOkumaMs;
+req.okumaKaynagi = tazeMi ? 'yazma' : 'okuma';</pre>
+  <pre><span class="dosya">Kanıt (Aşama 3, madde 9): bakiye yüklendikten hemen sonra ve 6 saniye sonra</span>POST /api/bakiye/yukle -&gt; Bakiye yüklendi. bakiye 715
+GET /api/bakiye -&gt; kaynak: yazma
+(6 saniye sonra) GET /api/bakiye -&gt; kaynak: okuma</pre>
+
+  <h3>Hata mesajlarının arayüze taşınması</h3>
+  <p>Yordamlar hata durumunda <code>SIGNAL SQLSTATE '45000'</code> ile Türkçe mesaj döner. mysql2 bunu <code>errno 1644</code> olarak verir. Merkezi hata yakalayıcı mesajı değiştirmeden <code>400 {"hata": "..."}</code> olarak gönderir. Arayüzdeki ortak <code>api()</code> fonksiyonu <code>hata</code> alanını bir <code>Error</code> olarak fırlatır, sayfa da onu bildirim kutusunda gösterir.</p>
+  <pre><span class="dosya">uygulama/src/ara-katman/hata.js</span>if (hata.errno === SP_SIGNAL) {
+  console.log(`[iş kuralı] ${req.method} ${req.originalUrl}: ${hata.sqlMessage}`);
+  return res.status(400).json({ hata: hata.sqlMessage });
+}</pre>
+  <pre><span class="dosya">frontend/js/ortak.js</span>if (!yanit.ok) {
+  const hata = new Error(veri?.hata || `İstek başarısız oldu (HTTP ${yanit.status}).`);
+  hata.durum = yanit.status;
+  throw hata;
+}</pre>
+  <pre><span class="dosya">Uygulama günlüğü: bakiyesi 12,50 TL olan öğrenci 40 TL'lik öğle menüsünü rezerve etmeye çalıştı</span>[iş kuralı] POST /api/rezervasyonlar: Bakiye yetersiz.
+POST /api/rezervasyonlar -&gt; 400 (5 ms)</pre>
+  <table>
+    <tr><th>Kaynak</th><th>Arayüzde görünen mesaj örnekleri</th></tr>
+    <tr><td>Yordam (<code>45000</code>)</td><td>Bakiye yetersiz. · Yemekhane kapasitesi dolu. · Bu menü için rezervasyon süresi doldu. · Bu menü için zaten rezervasyonunuz var. · Bu rezervasyon için iptal süresi doldu. · Yükleme tutarı 10 ile 1000 TL arasında olmalıdır.</td></tr>
+    <tr><td>Controller doğrulaması</td><td>E-posta ve şifre gereklidir. · E-posta veya şifre hatalı. · Geçerli bir tutar girin.</td></tr>
+    <tr><td>Ara katman</td><td>Oturumunuz yok ya da süresi doldu. Lütfen giriş yapın. (401) · Bu işlem için yetkiniz yok. (403)</td></tr>
+    <tr><td>Beklenmeyen hata</td><td>Beklenmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyin. (500; ayrıntı yalnızca sunucu günlüğünde)</td></tr>
+  </table>
+</section>
+
+<section class="bolum">
+  <h2>Aşama 2 · Ekranlar</h2>
+  <p>Ekran görüntüleri telefon genişliğinde (390 px) alındı; yönetici paneli ayrıca masaüstü genişliğinde gösterildi. Sayfaların hiçbirinde 375 px'te yatay kaydırma oluşmuyor. Uzun sayfaların yalnızca üst kısmı gösterildi.</p>
+  <div class="ekranlar">
+    <figure>
+      <div class="cerceve kirp"><img src="../ekran/01-giris.jpg" alt=""></div>
+      <figcaption><b>1. Giriş.</b> E-posta ve şifre; şifre sunucuda bcrypt ile doğrulanır. Çıkış her sayfanın üst çubuğunda.</figcaption>
+    </figure>
+    <figure>
+      <div class="cerceve kirp"><img src="../ekran/02-gunun-menusu.jpg" alt=""></div>
+      <figcaption><b>2. Günün menüsü.</b> Yemekhane, öğün ve tarih seçimi; kategori sırasıyla yemekler, toplam kalori, vejetaryen ve alerjen rozetleri.</figcaption>
+    </figure>
+    <figure>
+      <div class="cerceve kirp"><img src="../ekran/03-haftalik-menu.jpg" alt=""></div>
+      <figcaption><b>3. Haftalık menü ve rezervasyon.</b> Boş yer, role göre fiyat, son saat; süresi geçen öğünde düğme pasif.</figcaption>
+    </figure>
+    <figure>
+      <div class="cerceve kirp"><img src="../ekran/04-rezervasyonlarim.jpg" alt=""></div>
+      <figcaption><b>4. Rezervasyonlarım.</b> Aktif, kullanıldı ve iptal durumları; son saat geçmemiş aktif rezervasyonda iptal düğmesi.</figcaption>
+    </figure>
+    <figure>
+      <div class="cerceve kirp"><img src="../ekran/05-bakiye.jpg" alt=""></div>
+      <figcaption><b>5. Bakiye.</b> Güncel bakiye, yükleme formu ve hareket geçmişi.</figcaption>
+    </figure>
+    <figure>
+      <div class="cerceve kirp"><img src="../ekran/06-degerlendirme.jpg" alt=""></div>
+      <figcaption><b>6. Değerlendirme.</b> Yalnızca kullanılmış menüler; 1–5 yıldız ve isteğe bağlı yorum.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="bolum">
+  <h3 style="margin-top:0">7. Yönetici paneli</h3>
+  <div class="ekranlar" style="grid-template-columns: 2.25fr 1fr;">
+    <figure>
+      <div class="cerceve"><img src="../ekran/07-yonetim-masaustu.jpg" alt=""></div>
+      <figcaption><b>Masaüstü.</b> Solda yeni menü formu (yemekhane, tarih, öğün, öğrenci ve personel fiyatı, kategorilere göre yemek seçimi). Sağda tarih aralığına göre menüler: doluluk çubuğu, ortalama puan ve Düzenle düğmesi.</figcaption>
+    </figure>
+    <figure>
+      <div class="cerceve kirp"><img src="../ekran/07-yonetim-mobil.jpg" alt=""></div>
+      <figcaption><b>Telefon (390 px).</b> Aynı panel tek sütun hâlinde.</figcaption>
+    </figure>
+  </div>
+
+  <h3>Hata mesajı arayüzde ve masaüstü görünüm</h3>
+  <div class="ekranlar" style="grid-template-columns: 1fr 2.25fr;">
+    <figure>
+      <div class="cerceve kirp"><img src="../ekran/09-hata-bakiye-yetersiz.jpg" alt=""></div>
+      <figcaption><b>Bakiye yetersiz.</b> Yordamın mesajı olduğu gibi bildirim kutusunda.</figcaption>
+    </figure>
+    <figure>
+      <div class="cerceve"><img src="../ekran/10-menu-masaustu.jpg" alt=""></div>
+      <figcaption><b>Günün menüsü, masaüstü (1280 px).</b> Aynı HTML ve CSS; düzen ekran genişliğine göre değişiyor.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="bolum">
+  <h2>Aşama 3 · Redis</h2>
+  <table>
+    <tr><th>Görev</th><th>Anahtar</th><th>Süre</th><th>Ne zaman silinir</th></tr>
+    <tr><td>Menü önbelleği</td><td><code>menu:{yemekhane_id}:{tarih}:{ogun_id}</code></td><td>Menünün gününün sonuna kadar (<code>EXAT</code>, İstanbul 23:59:59)</td><td>Yönetici menüyü değiştirince silinir ve kaynaktan yeniden yüklenir</td></tr>
+    <tr><td>Oturum</td><td><code>oturum:{token}</code></td><td>30 dakika, her istekte <code>GETEX ... EX 1800</code> ile yenilenir</td><td>Çıkışta <code>DEL</code></td></tr>
+  </table>
+  <table>
+    <tr><th>#</th><th>Kontrol</th><th>Sonuç</th></tr>
+    <tr><td>1</td><td>Uygulama Redis'e bağlanıyor; sağlıkta <code>"redis":"ok"</code></td><td class="gecti">Geçti</td></tr>
+    <tr><td>2</td><td>Menü ilk istekte veritabanından, sonrakilerde Redis'ten</td><td class="gecti">Geçti</td></tr>
+    <tr><td>3</td><td>Menü kaydı menünün günü bitince siliniyor</td><td class="gecti">Geçti</td></tr>
+    <tr><td>4</td><td>Yönetici menüyü değiştirince eski kayıt siliniyor, arayüz yeni menüyü gösteriyor</td><td class="gecti">Geçti</td></tr>
+    <tr><td>5</td><td>Uygulama container'ı yeniden başlasa da oturum düşmüyor</td><td class="gecti">Geçti</td></tr>
+    <tr><td>6</td><td>Oturum süresi her istekte 30 dakikaya yenileniyor, çıkışta siliniyor</td><td class="gecti">Geçti</td></tr>
+  </table>
+
+  <h3>1. İlk istek veritabanından, sonrakiler Redis'ten (uygulama günlüğü)</h3>
+  <pre>PS&gt; docker compose logs -f uygulama
+[redis] redis:6379 bağlandı
+[önbellek] menu:1:2026-11-14:2 -&gt; veritabanından geldi (replika)
+GET /api/menuler/gunluk?yemekhane_id=1&amp;tarih=2026-11-14&amp;ogun_id=2 -&gt; 200 (6 ms)
+[önbellek] menu:1:2026-11-14:2 -&gt; Redis'ten geldi
+GET /api/menuler/gunluk?yemekhane_id=1&amp;tarih=2026-11-14&amp;ogun_id=2 -&gt; 200 (4 ms)</pre>
+  <pre>PS&gt; docker compose exec redis redis-cli --scan --pattern 'menu:*'
+menu:1:2026-11-14:2
+PS&gt; docker compose exec redis redis-cli GET menu:1:2026-11-14:2
+{"menu_id":80,"tarih":"2026-11-14","yemekhane_id":1,"yemekhane":"Merkez Yemekhane","ogun_id":2,"ogun":"Öğle",
+ "ogrenci_fiyati":40,"personel_fiyati":90,"toplam_kalori":1180,"yemekler":[{"yemek":"Mercimek Çorbası",...}, ...]}
+PS&gt; docker compose exec redis redis-cli EXPIRETIME menu:1:2026-11-14:2
+(integer) 1794689999          (2026-11-14 23:59:59 +03:00)</pre>
+  <p>Önbellekte yalnızca gün içinde değişmeyen bilgi tutulur: yemekler, kalori, alerjenler ve fiyatlar. Boş yer sayısı ve kullanıcının kendi rezervasyonu her istekte veritabanından okunur, çünkü bunlar her rezervasyonda değişir.</p>
+
+  <h3>2. Yönetici menüyü değiştirince</h3>
+  <pre>[önbellek] menu:1:2026-11-15:2 -&gt; Redis'ten geldi                     (önce: personel fiyatı 100)
+PUT /api/yonetim/menuler/85                                            (yönetici fiyatı 95 yaptı)
+[önbellek] menu:1:2026-11-15:2 silindi (vardı)
+[önbellek] menu:1:2026-11-15:2 -&gt; veritabanından geldi (kaynak)
+PUT /api/yonetim/menuler/85 -&gt; 200 (31 ms)
+[önbellek] menu:1:2026-11-15:2 -&gt; Redis'ten geldi                     (sonra: personel fiyatı 95)</pre>
+  <p>Güncellemeden sonra kayıt silinir ve menü <b>kaynaktan</b> yeniden yüklenir. Replikadan yüklenseydi, replika birkaç milisaniye geride kaldığında eski fiyat okunup gün sonuna kadar önbellekte kalabilirdi.</p>
+
+  <h3>3. Uygulama yeniden başlayınca oturum</h3>
+  <div class="iki">
+    <pre><span class="dosya">Önce: oturum uygulamanın belleğinde (Map)</span>giriş yapıldı: Mehmet Yıldız
+GET /api/oturum/ben -&gt; 200
+PS&gt; docker compose restart uygulama
+aynı çerezle:
+GET /api/oturum/ben -&gt; 401</pre>
+    <pre><span class="dosya">Sonra: oturum Redis'te</span>giriş yapıldı: Mehmet Yıldız
+GET /api/oturum/ben -&gt; 200
+PS&gt; docker compose restart uygulama
+aynı çerezle:
+GET /api/oturum/ben -&gt; 200, Mehmet Yıldız</pre>
+  </div>
+
+  <h3>4. Oturum kaydı, süre yenileme ve çıkış</h3>
+  <pre>&gt; redis-cli GET oturum:14482ddc380e...
+{"id":7,"ad":"Mehmet","soyad":"Yıldız","eposta":"mehmet.yildiz@ogr.kampus.edu.tr","rol":"ogrenci","sonYazma":0}
+&gt; redis-cli TTL oturum:14482ddc380e...
+1799
+(5 saniye bekleniyor)
+&gt; redis-cli TTL oturum:14482ddc380e...
+1793
+GET /api/oturum/ben gönderildi
+&gt; redis-cli TTL oturum:14482ddc380e...
+1800
+POST /api/oturum/cikis gönderildi
+&gt; redis-cli EXISTS oturum:14482ddc380e...
+0</pre>
+  <p>Oturumda şifre ya da bakiye tutulmaz. Kullanıcı 30 dakika hiç istek göndermezse kaydı Redis kendisi siler. Çerez <code>HttpOnly</code> ve <code>SameSite=Strict</code> olduğu için JavaScript tarafından okunamaz.</p>
+</section>
+
+<section class="bolum">
+  <h2>Aşama 4 · Değişiklik talebi</h2>
+  <p>Yemekhane Müdürlüğü'nün iki isteği <b>sistem çalışırken</b> uygulandı. <b>Yarım porsiyon:</b> öğle ve akşamda seçilebilir, ücret tam fiyatın %60'ı, kahvaltıda yok, geçmiş rezervasyonlar tam sayılır. <b>Alerjen uyarısı:</b> kullanıcı profilinde alerjenlerini seçer, menüde bu alerjenleri içeren yemekler uyarıyla gösterilir.</p>
+
+  <h3>Migration: <code>db/init/04_degisiklik.sql</code></h3>
+  <table>
+    <tr><th>Değişiklik</th><th>Neden</th></tr>
+    <tr><td><code>ogunler.yarim_porsiyon_orani DECIMAL(3,2) NULL</code> (Öğle ve Akşam 0.60, Kahvaltı NULL)</td><td>"Kahvaltıda yarım yok" kuralı kodda değil veride durur. Oran değişirse kod değişmez.</td></tr>
+    <tr><td><code>rezervasyonlar.porsiyon ENUM('tam','yarim') NOT NULL DEFAULT 'tam'</code></td><td>Varsayılan <code>tam</code> olduğu için eski satırların hepsi tam porsiyon sayılır.</td></tr>
+    <tr><td>Yeni tablo <code>kullanici_alerjenleri</code></td><td>Kullanıcı ile alerjen arasında çoka çok ilişki; kullanıcı silinirse kayıtları da silinir.</td></tr>
+    <tr><td><code>v_menu_detay</code>: <code>ogrenci_yarim_fiyati</code>, <code>personel_yarim_fiyati</code></td><td>Arayüz yarım fiyatı rezervasyondan önce gösterebilsin; hesap veritabanında yapılır.</td></tr>
+    <tr><td><code>sp_rezervasyon_yap(kullanici_id, menu_id, porsiyon)</code></td><td>Yarım ücreti hesaplar, kahvaltıda yarımı reddeder. İptal yordamı değişmedi: zaten kayıttaki ücreti iade ediyor.</td></tr>
+  </table>
+
+  <h3>Çalışan sistemde kaynağa uygulama</h3>
+  <pre>PS&gt; cmd /c "docker compose exec -T mysql-primary mysql -uroot -pyemekhane_kok yemekhane &lt; db\init\04_degisiklik.sql"
+PS&gt; $LASTEXITCODE
+0</pre>
+  <p class="kucuk">PowerShell 5.1'de <code>&lt;</code> yönlendirmesi olmadığı için <code>cmd /c</code> kullanıldı. Replikaya ayrıca hiçbir şey uygulanmadı.</p>
+
+  <h3>Değişikliğin replikaya geçtiğinin kanıtı</h3>
+  <pre>PS&gt; docker compose exec mysql-replica mysql -uroot -pyemekhane_kok yemekhane -e "SHOW CREATE TABLE rezervasyonlar\G"
+  `durum` enum('aktif','kullanildi','iptal') ... NOT NULL DEFAULT 'aktif',
+  `porsiyon` enum('tam','yarim') COLLATE utf8mb4_tr_0900_ai_ci NOT NULL DEFAULT 'tam',
+  `ucret` decimal(8,2) NOT NULL,
+
+PS&gt; ... -e "SHOW CREATE TABLE kullanici_alerjenleri\G"
+CREATE TABLE `kullanici_alerjenleri` (
+  `kullanici_id` int unsigned NOT NULL,
+  `alerjen_id` tinyint unsigned NOT NULL,
+  PRIMARY KEY (`kullanici_id`,`alerjen_id`),
+  CONSTRAINT `fk_ka_alerjen` FOREIGN KEY (`alerjen_id`) REFERENCES `alerjenler` (`id`),
+  CONSTRAINT `fk_ka_kullanici` FOREIGN KEY (`kullanici_id`) REFERENCES `kullanicilar` (`id`) ON DELETE CASCADE
+)
+
+PS&gt; ... -e "SHOW CREATE TABLE ogunler\G"
+  `yarim_porsiyon_orani` decimal(3,2) DEFAULT NULL,
+  CONSTRAINT `ck_ogun_yarim_oran` CHECK (((`yarim_porsiyon_orani` is null) or ((`yarim_porsiyon_orani` &gt; 0) and (`yarim_porsiyon_orani` &lt; 1))))
+
+PS&gt; ... -e "SHOW REPLICA STATUS\G"
+           Replica_IO_Running: Yes
+          Replica_SQL_Running: Yes
+        Seconds_Behind_Source: 0
+               Last_SQL_Error:</pre>
+  <p>Migration'dan önce replikadaki <code>rezervasyonlar</code> tablosunda <code>porsiyon</code> sütunu, <code>kullanici_alerjenleri</code> tablosu ise hiç yoktu.</p>
+</section>
+
+<section>
+  <h3>Mevcut veri bozulmadı</h3>
+  <pre><span class="dosya">Migration'dan önce ve sonra kaynakta aynı özet</span>rezervasyon_sayisi  toplam_ucret  aktif  kullanildi  iptal        kullanici_sayisi  toplam_bakiye   bakiyesi_hareketlerle_uyusmayan
+370                 16340.00      156    167         47           30                10097.50        0
+
+(replika) SELECT porsiyon, COUNT(*) FROM rezervasyonlar GROUP BY porsiyon
+tam       370</pre>
+
+  <h3>Yayın sırası ve Redis'teki eski menü kayıtlarının temizlenmesi</h3>
+  <ol>
+    <li><code>04_degisiklik.sql</code> kaynağa uygulanır; replikaya kendisi geçer.</li>
+    <li>Uygulama yeni kodla kurulur: <code>docker compose up -d --build uygulama</code>.</li>
+    <li>Redis'teki eski yapıdaki menü kayıtları silinir. Temizlik 2'den <b>sonra</b> yapılır; önce yapılırsa eski uygulama menüleri yine eski yapıda önbelleğe yazabilir.</li>
+  </ol>
+  <pre><span class="dosya">Temizlikten önce önbellekteki kayıtta yarım fiyat alanları yok</span>&gt; redis-cli GET menu:1:2026-11-15:2
+{"menu_id":85,"tarih":"2026-11-15",...,"ogrenci_fiyati":40,"personel_fiyati":95,...}
+GET /api/menuler/gunluk (15 Kasım, Öğle) -&gt; porsiyonlar: Tam porsiyon 40 TL</pre>
+  <pre><span class="dosya">Yalnızca menu:* anahtarları silinir, oturumlara dokunulmaz</span>PS&gt; docker compose exec redis sh -c "redis-cli --scan --pattern 'menu:*' | xargs -r redis-cli DEL"
+(integer) 1
+PS&gt; docker compose exec redis redis-cli --scan --pattern 'menu:*'
+(boş)
+GET /api/menuler/gunluk (15 Kasım, Öğle) -&gt; porsiyonlar: Tam porsiyon 40 TL | Yarım porsiyon 24 TL
+[önbellek] menu:1:2026-11-15:2 -&gt; veritabanından geldi (replika)</pre>
+  <p class="kucuk"><code>KEYS</code> yerine <code>SCAN</code> kullanıldı; <code>KEYS</code> büyük bir Redis'te sunucuyu bir süre kilitleyebilir.</p>
+
+  <h3>Yarım porsiyon kuralları (API)</h3>
+  <pre>öğrenci kahvaltı yarım            -&gt; 400 Bu öğünde yarım porsiyon yoktur.
+öğrenci öğle 'ceyrek'             -&gt; 400 Geçersiz porsiyon seçimi.
+öğrenci öğle yarım                -&gt; 201 porsiyon=yarim ucret=24 bakiye=691
+öğrenci kahvaltı (porsiyon yok)   -&gt; 201 porsiyon=tam ucret=30 bakiye=661
+hareket: Rezervasyon (yarım porsiyon) -24
+öğle yarım iptal                  -&gt; 200 iade=24 bakiye=685
+personel akşam yarım (100 × 0,60) -&gt; 201 ucret=60</pre>
+
+  <h3>Alerjen seçimi ve uyarı (API)</h3>
+  <pre>Gluten(1) ve Süt(7) kaydet  -&gt; 200 Alerjenleriniz kaydedildi. [1,7]
+olmayan alerjen 99          -&gt; 400 Geçersiz alerjen seçimi.
+günlük 16 Kasım Öğle        -&gt; alerjen_uyarisi: 3
+  Izgara Köfte: alerjenler [Gluten, Yumurta]      -&gt; uyarı [Gluten]
+  Su Böreği:    alerjenler [Gluten, Süt, Yumurta] -&gt; uyarı [Gluten, Süt]
+  Ayran:        alerjenler [Süt]                  -&gt; uyarı [Süt]
+boş liste kaydet            -&gt; 200 Alerjen listeniz temizlendi.</pre>
+  <p>Menü Redis'te herkes için aynı tutulur. Kullanıcıya özel uyarı her istekte sunucuda hesaplanır (<code>menuServisi.alerjenUyarilari</code>), böylece önbellek kullanıcıya göre bölünmez.</p>
+</section>
+
+<section class="bolum">
+  <h3 style="margin-top:0">Arayüz: porsiyon seçimi, profilde alerjen seçimi, menüde uyarı</h3>
+  <div class="ekranlar">
+    <figure>
+      <div class="cerceve kirp"><img src="../ekran/03-haftalik-menu.jpg" alt=""></div>
+      <figcaption><b>Porsiyon seçimi.</b> Öğle ve akşamda Tam / Yarım; yarım fiyat %60. Kahvaltıda seçim yok.</figcaption>
+    </figure>
+    <figure>
+      <div class="cerceve kirp"><img src="../ekran/08-profil.jpg" alt=""></div>
+      <figcaption><b>Profilim.</b> Kullanıcı bilgileri ve 14 alerjenden seçim; kaydedince menüde uyarı hemen görünür.</figcaption>
+    </figure>
+    <figure>
+      <div class="cerceve kirp"><img src="../ekran/02-gunun-menusu.jpg" alt=""></div>
+      <figcaption><b>Menüde uyarı.</b> Gluten ve Süt seçili kullanıcı: 3 yemek kırmızı çizgi ve "Alerjeniniz" rozetiyle işaretli; ücret kutusunda yarım fiyat.</figcaption>
+    </figure>
+  </div>
+
+  <h3>Sıfırdan kurulumda migration kendiliğinden çalışıyor</h3>
+  <pre>PS&gt; docker compose -p yemekhanetest up -d --build
+[Entrypoint]: running /docker-entrypoint-initdb.d/01_sema.sql
+[Entrypoint]: running /docker-entrypoint-initdb.d/02_ornek_veri.sql
+[Entrypoint]: running /docker-entrypoint-initdb.d/04_degisiklik.sql
+[replica-setup] Replikasyon çalışıyor (IO=Yes, SQL=Yes). Replika salt okunur.
+(replika) SELECT id, ad, yarim_porsiyon_orani FROM ogunler
+1  Kahvaltı  NULL
+2  Öğle      0.60
+3  Akşam     0.60
+yarım rezervasyon -&gt; porsiyon=yarim ucret=24
+PS&gt; docker compose -p yemekhanetest down -v</pre>
+  <p>Depoyu yeni indiren biri ek bir adım yapmadan <code>docker compose up -d</code> ile Aşama 4 dahil tüm sistemi alır. Deneme ayrı bir proje adıyla (<code>-p yemekhanetest</code>) yapıldı, ana sistemin verisine dokunulmadı.</p>
+</section>
+
+</body>
+</html>

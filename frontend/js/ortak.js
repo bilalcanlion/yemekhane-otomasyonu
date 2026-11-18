@@ -142,7 +142,11 @@ const Y = (() => {
     const rolAdi = { ogrenci: 'Öğrenci', personel: 'Personel', yonetici: 'Yönetici' }[kullanici.rol];
     ust.replaceChildren(
       el('div', { class: 'ust-satir kapsayici' },
-        el('a', { class: 'marka', href: '/menu.html' }, el('span', { class: 'marka-isaret', 'aria-hidden': 'true' }), 'Yemekhane'),
+        el('a', { class: 'marka', href: '/menu.html' },
+          el('span', { class: 'marka-isaret', 'aria-hidden': 'true' }),
+          el('span', { class: 'marka-metin' },
+            el('small', {}, el('span', { class: 'marka-kisa' }, 'KTÜN'), el('span', { class: 'marka-uzun' }, 'Konya Teknik Üniversitesi')),
+            'Yemekhane')),
         el('div', { class: 'ust-kullanici' },
           el('span', { class: 'ust-ad' }, `${kullanici.ad} ${kullanici.soyad}`, el('small', {}, rolAdi)),
           el('a', { class: 'bakiye-cip', href: '/bakiye.html', id: 'ust-bakiye', title: 'Güncel bakiye' }, tl(kullanici.bakiye)),

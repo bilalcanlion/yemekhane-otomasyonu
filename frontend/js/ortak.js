@@ -11,6 +11,19 @@ const Y = (() => {
     { yol: '/yonetim.html', ad: 'Yönetim', rol: 'yonetici' },
   ];
 
+  const OGUN_SINIFLARI = { 'Kahvaltı': 'ogun-kahvalti', 'Öğle': 'ogun-ogle', 'Akşam': 'ogun-aksam' };
+  const KATEGORI_SINIFLARI = {
+    'Çorba': 'kat-corba',
+    'Ana Yemek': 'kat-ana',
+    'Yardımcı Yemek': 'kat-yardimci',
+    'Salata ve Meze': 'kat-salata',
+    'Tatlı ve Meyve': 'kat-tatli',
+    'Kahvaltılık': 'kat-kahvaltilik',
+    'İçecek': 'kat-icecek',
+  };
+  const ogunSinifi = (ogun) => OGUN_SINIFLARI[ogun] || 'ogun-ogle';
+  const kategoriSinifi = (kategori) => KATEGORI_SINIFLARI[kategori] || 'kat-ana';
+
   let kullanici = null;
 
   async function api(yol, { method = 'GET', govde } = {}) {
@@ -159,7 +172,7 @@ const Y = (() => {
 
   return {
     api, el, bildir, bildirimTemizle, tl, tarihYaz, saatYaz, tarihSaatYaz, gunEkle,
-    secenekDoldur, durumRozeti, bekle, sayfaBaslat, bakiyeGoster,
+    secenekDoldur, durumRozeti, bekle, sayfaBaslat, bakiyeGoster, ogunSinifi, kategoriSinifi,
     get kullanici() { return kullanici; },
   };
 })();

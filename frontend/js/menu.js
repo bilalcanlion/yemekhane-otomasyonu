@@ -48,11 +48,12 @@
     }
 
     hedef.replaceChildren(
-      el('article', { class: 'kart' },
-        el('div', { class: 'kart-baslik' },
-          el('div', {},
-            el('h2', {}, `${m.ogun} · ${m.yemekhane}`),
-            el('p', { class: 'soluk kucuk sikisik' }, Y.tarihYaz(m.tarih, true))),
+      el('article', { class: `kart menu-karti ${Y.ogunSinifi(m.ogun)}` },
+        el('header', { class: 'menu-baslik' },
+          el('span', { class: 'ogun-ikon', 'aria-hidden': 'true' }),
+          el('h2', {}, m.ogun),
+          el('p', { class: 'menu-yer' }, m.yemekhane),
+          el('p', { class: 'soluk kucuk sikisik' }, Y.tarihYaz(m.tarih, true)),
           m.tamami_vejetaryen ? el('span', { class: 'rozet rozet-veg' }, 'Tamamı vejetaryen') : null),
 
         el('dl', { class: 'ozet' },
@@ -72,7 +73,7 @@
 
         gruplar.map((g) =>
           el('section', { class: 'kategori' },
-            el('h3', {}, g.kategori),
+            el('h3', { class: Y.kategoriSinifi(g.kategori) }, g.kategori),
             el('ul', { class: 'yemekler' }, g.yemekler.map(yemekSatiri)))),
 
         el('div', { class: 'ogun-alt ust-bosluk' },

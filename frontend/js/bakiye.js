@@ -9,6 +9,8 @@
   const form = document.getElementById('yukle-formu');
   const turAdi = { yukleme: 'Yükleme', rezervasyon: 'Rezervasyon', iade: 'İade' };
 
+  document.getElementById('kart-sahibi').textContent = `${Y.kullanici.ad} ${Y.kullanici.soyad}`;
+
   document.querySelectorAll('[data-tutar]').forEach((b) =>
     b.addEventListener('click', () => {
       form.tutar.value = b.dataset.tutar;

@@ -57,7 +57,7 @@
   }
 
   function kart(r) {
-    return el('article', { class: 'kart' },
+    return el('article', { class: `kart fis ${Y.ogunSinifi(r.ogun)}` },
       el('div', { class: 'kart-baslik' },
         el('div', {},
           el('h3', {}, `${Y.tarihYaz(r.tarih)} · ${r.ogun}`),

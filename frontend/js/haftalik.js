@@ -85,9 +85,9 @@
       rezerveEt(m, dugme, secili ? secili.value : 'tam');
     });
 
-    return el('article', { class: 'kart ogun-kart' },
+    return el('article', { class: `kart ogun-kart ${Y.ogunSinifi(m.ogun)}` },
       el('div', { class: 'kart-baslik' },
-        el('h3', {}, m.ogun),
+        el('h3', { class: 'ogun-ad' }, el('span', { class: 'ogun-ikon', 'aria-hidden': 'true' }), m.ogun),
         el('span', { class: 'fiyat' }, Y.tl(m.fiyat))),
       el('p', { class: 'yemek-ozet' }, m.yemekler),
       m.uyari_yemekler.length

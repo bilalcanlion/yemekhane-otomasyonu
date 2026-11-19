@@ -137,6 +137,12 @@ services:
     restart: unless-stopped
     environment:
       <<: *uygulama-ortam
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8000/api/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
     depends_on:
       mysql-primary:
         condition: service_healthy

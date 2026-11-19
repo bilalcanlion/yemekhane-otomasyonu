@@ -22,6 +22,7 @@ docker compose ps -a
 | mysql-replica | `Up (healthy)` |
 | redis | `Up (healthy)` |
 | frontend | `Up (healthy)` |
+| uygulama | `Up (healthy)` |
 | replica-setup | `Exited (0)` — işini yapıp çıkar, bu normaldir |
 
 `replica-setup` yalnızca `docker compose ps -a` ile görünür (`-a` olmadan çıkmış container'lar listelenmez).
